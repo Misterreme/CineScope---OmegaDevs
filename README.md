@@ -5,12 +5,22 @@
 * Sistema completo de registro y login de usuarios
 * Autenticación JWT para sesiones seguras
 * Gestión de perfiles de usuario personalizados
-*🔍 Búsqueda de Películas
+  
+## 🔍 Búsqueda de Películas
 * Integración con OMDb API / TMDb API para acceso a una amplia base de datos de películas
 * Búsqueda en tiempo real con resultados instantáneos
 * Información detallada de cada película (sinopsis, rating, póster, año, género)
-*📚 Gestión de Listas Personales
+  
+## 📚 Gestión de Listas Personales
 * Lista "Quiero Ver": Guarda películas para ver más tarde
 * Lista "Ya Vistas": Organiza tu historial cinematográfico
 * Operaciones CRUD completas para ambas listas
 * Sincronización con el perfil del usuario
+
+## 🛠️ Tecnologías Utilizadas
+Frontend: React
+Backend: Node.js
+Base de Datos: SupaBase
+Autenticación: JSON Web Tokens (JWT)
+APIs Externas: OMDb API / TMDb API
+Estilos: CSS
