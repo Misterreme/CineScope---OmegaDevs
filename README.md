@@ -18,9 +18,9 @@
 * Sincronización con el perfil del usuario
 
 ## 🛠️ Tecnologías Utilizadas
-Frontend: React
-Backend: Node.js
-Base de Datos: SupaBase
-Autenticación: JSON Web Tokens (JWT)
-APIs Externas: OMDb API / TMDb API
-Estilos: CSS
+* Frontend: React
+* Backend: Node.js
+* Base de Datos: SupaBase
+* Autenticación: JSON Web Tokens (JWT)
+* APIs Externas: OMDb API / TMDb API
+* Estilos: CSS
