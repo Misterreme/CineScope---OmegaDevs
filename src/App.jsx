@@ -1,34 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
+import AuthPage from './components/Auth/AuthPage'
+import Dashboard from './pages/Dashboard'
+import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function AppContent() {
+  const { user, loading } = useAuth()
 
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Cargando Cines Scope...</p>
+      </div>
+    )
+  }
+
+  return user ? <Dashboard /> : <AuthPage />
+}
+
+function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>OMEGA_DEV</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ErrorBoundary>
+      <Router>
+        <AuthProvider>
+          <div className="app">
+            <AppContent />
+          </div>
+        </AuthProvider>
+      </Router>
+    </ErrorBoundary>
   )
 }
 
