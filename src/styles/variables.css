@@ -1,0 +1,57 @@
+:root {
+  /* 🎨 PALETA DE COLORES PRINCIPAL */
+  --color-primary: #FCA311;           /* Naranja - Elementos destacados */
+  --color-secondary: #156064;         /* Azul - Elementos secundarios */
+  --color-dark-primary: #0E0F19;      /* Fondo principal */
+  --color-dark-secondary: #37123C;    /* Contenedores secundarios */
+  --color-accent: #E5E5E5;            /* Campos de formulario y texto */
+  --color-border: #2A2D3E;            /* Bordes y separadores */
+  --color-purple: #6B46C1;            /* Gradientes y decorativos */
+  --color-white: #FFFFFF;              /* Texto principal */
+  --color-gray-light: #E5E5E5;        /* Texto secundario */
+  --color-gray-subtle: #9CA3AF;       /* Texto sutil y placeholders */
+
+  /* 📏 SISTEMA DE ESPACIADO */
+  --spacing-xs: 0.25rem;              /* 4px */
+  --spacing-sm: 0.5rem;               /* 8px */
+  --spacing-md: 1rem;                 /* 16px */
+  --spacing-lg: 1.5rem;               /* 24px */
+  --spacing-xl: 2rem;                 /* 32px */
+  --spacing-xxl: 3rem;                /* 48px */
+
+  /* 🔲 BORDES Y SOMBRAS */
+  --border-radius-sm: 0.5rem;         /* 8px - Elementos generales */
+  --border-radius-lg: 1rem;           /* 16px - Cards grandes */
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* ⚡ ANIMACIONES Y TRANSICIONES */
+  --transition-fast: 0.2s;
+  --transition-medium: 0.3s;
+  --transition-slow: 0.5s;
+  
+  --easing-default: ease;
+  --easing-smooth: ease-in-out;
+  --easing-bounce: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 📱 BREAKPOINTS RESPONSIVE */
+  --breakpoint-mobile: 320px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1200px;
+
+  /* 🎭 GRADIENTES CINEMATOGRÁFICOS */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, #E67E22 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-secondary) 0%, #1E3A8A 100%);
+  --gradient-dark: linear-gradient(135deg, var(--color-dark-primary) 0%, var(--color-dark-secondary) 100%);
+  --gradient-purple: linear-gradient(135deg, var(--color-purple) 0%, #8B5CF6 100%);
+  --gradient-hero: linear-gradient(135deg, var(--color-dark-primary) 0%, var(--color-accent) 50%, var(--color-dark-secondary) 100%);
+  
+  /* 🌟 EFECTOS ESPECIALES */
+  --backdrop-blur: blur(10px);
+  --glass-bg: rgba(26, 27, 46, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}

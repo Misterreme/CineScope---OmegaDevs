@@ -92,6 +92,55 @@ class MovieService {
       }
     }
   }
+
+  async getMoviesByCategory(category) {
+    // Mapeo de categorías a términos de búsqueda específicos
+    const categoryMappings = {
+      'action': ['action', 'adventure', 'thriller', 'superhero', 'war'],
+      'comedy': ['comedy', 'funny', 'humor', 'romantic comedy'],
+      'sci-fi': ['sci-fi', 'science fiction', 'space', 'future', 'robot'],
+      'romance': ['romance', 'romantic', 'love story', 'drama'],
+      'horror': ['horror', 'scary', 'thriller', 'suspense'],
+      'drama': ['drama', 'emotional', 'serious', 'biography'],
+      'fantasy': ['fantasy', 'magic', 'wizard', 'dragon', 'medieval'],
+      'mystery': ['mystery', 'detective', 'crime', 'investigation'],
+      'adventure': ['adventure', 'exploration', 'journey', 'quest'],
+      'thriller': ['thriller', 'suspense', 'psychological', 'crime']
+    }
+
+    const searchTerms = categoryMappings[category] || ['movie']
+    
+    try {
+      let allMovies = []
+      
+      // Buscar películas para cada término de la categoría
+      for (const term of searchTerms.slice(0, 3)) { // Limitar a 3 términos para no sobrecargar la API
+        const result = await this.searchMovies(term, 1)
+        if (result.success && result.movies) {
+          allMovies = [...allMovies, ...result.movies]
+        }
+      }
+      
+      // Eliminar duplicados basándose en imdbID
+      const uniqueMovies = allMovies.filter((movie, index, self) => 
+        index === self.findIndex(m => m.imdbID === movie.imdbID)
+      )
+      
+      return {
+        movies: uniqueMovies.slice(0, 20), // Limitar a 20 películas
+        totalResults: uniqueMovies.length,
+        success: true
+      }
+    } catch (error) {
+      console.error('Error getting movies by category:', error)
+      return {
+        movies: [],
+        totalResults: 0,
+        success: false,
+        error: 'Error loading movies by category'
+      }
+    }
+  }
 }
 
 export const movieService = new MovieService()

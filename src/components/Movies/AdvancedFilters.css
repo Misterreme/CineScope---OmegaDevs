@@ -1,0 +1,232 @@
+/* 🎭 ESTILOS DE FILTROS AVANZADOS */
+
+.advanced-filters {
+  background: var(--glass-bg);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.advanced-filters:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+/* 🎯 HEADER DE FILTROS */
+.filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  cursor: pointer;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.filters-header:hover {
+  background: rgba(252, 163, 17, 0.05);
+}
+
+.filters-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.filters-title svg {
+  color: var(--color-primary);
+}
+
+.active-indicator {
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* 🌟 CONTENIDO DE FILTROS */
+.filters-content {
+  padding: var(--spacing-lg);
+  animation: slideDown 0.3s var(--easing-smooth);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* 🎨 GRUPOS DE FILTROS */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.filter-label {
+  color: var(--color-gray-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-select {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-accent);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-dark-secondary);
+  box-shadow: 0 0 0 3px rgba(252, 163, 17, 0.1);
+}
+
+.filter-select:hover {
+  border-color: var(--color-primary);
+}
+
+.filter-select option {
+  background: var(--color-dark-secondary);
+  color: var(--color-white);
+  padding: var(--spacing-sm);
+}
+
+/* 🎭 BOTONES DE ACCIÓN */
+.filters-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--glass-border);
+}
+
+.btn-clear-filters {
+  border-color: var(--color-gray-subtle);
+  color: var(--color-gray-light);
+}
+
+.btn-clear-filters:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-clear-filters:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-apply-filters {
+  min-width: 140px;
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .filters-actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .btn-apply-filters,
+  .btn-clear-filters {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .filters-content {
+    padding: var(--spacing-md);
+  }
+  
+  .filters-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .filters-title {
+    font-size: 0.9rem;
+  }
+}
+
+/* 🌟 ESTADOS INTERACTIVOS */
+.advanced-filters.open {
+  box-shadow: var(--shadow-xl);
+}
+
+.advanced-filters.open .filters-header {
+  background: rgba(252, 163, 17, 0.1);
+  border-bottom-color: var(--color-primary);
+}
+
+/* 🎭 EFECTOS DE HOVER EN SELECTS */
+.filter-select:hover {
+  transform: translateY(-1px);
+}
+
+/* 🌟 ANIMACIONES ADICIONALES */
+.advanced-filters {
+  transform-origin: top;
+}
+
+.advanced-filters.open {
+  animation: expandFilters 0.3s var(--easing-smooth);
+}
+
+@keyframes expandFilters {
+  from {
+    transform: scaleY(0.95);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* 🎨 MEJORAS DE ACCESIBILIDAD */
+.filter-select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.filters-header:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}

@@ -1,0 +1,415 @@
+/* 🎭 ESTILOS DE NOTIFICACIONES */
+
+.notification {
+  position: fixed;
+  z-index: 1000;
+  max-width: 400px;
+  min-width: 300px;
+  background: var(--glass-bg);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  animation: slideInNotification 0.3s var(--easing-smooth);
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.notification.exiting {
+  animation: slideOutNotification 0.3s var(--easing-smooth) forwards;
+}
+
+/* 🎯 POSICIONES */
+.notification.top-right {
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+}
+
+.notification.top-left {
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+}
+
+.notification.bottom-right {
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+}
+
+.notification.bottom-left {
+  bottom: var(--spacing-lg);
+  left: var(--spacing-lg);
+}
+
+.notification.top-center {
+  top: var(--spacing-lg);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.notification.bottom-center {
+  bottom: var(--spacing-lg);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 🌟 CONTENIDO DE NOTIFICACIÓN */
+.notification-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notification-message {
+  flex: 1;
+  color: var(--color-white);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-medium) var(--easing-smooth);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-close:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+/* 🎨 TIPOS DE NOTIFICACIÓN */
+.notification-success {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 20px rgba(21, 96, 100, 0.3);
+}
+
+.notification-success .notification-icon {
+  color: var(--color-secondary);
+}
+
+.notification-error {
+  border-color: #EF4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.notification-error .notification-icon {
+  color: #EF4444;
+}
+
+.notification-warning {
+  border-color: #F59E0B;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.notification-warning .notification-icon {
+  color: #F59E0B;
+}
+
+.notification-info {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(252, 163, 17, 0.3);
+}
+
+.notification-info .notification-icon {
+  color: var(--color-primary);
+}
+
+/* 🌟 BARRA DE PROGRESO */
+.notification-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.notification-progress-bar {
+  height: 100%;
+  background: var(--color-primary);
+  animation: progressBar var(--duration, 5000ms) linear forwards;
+}
+
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* 🎭 ANIMACIONES DE ENTRADA Y SALIDA */
+@keyframes slideInNotification {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideOutNotification {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%) scale(0.9);
+  }
+}
+
+/* 🎯 POSICIONES ESPECÍFICAS */
+.notification.top-left {
+  animation: slideInNotificationLeft 0.3s var(--easing-smooth);
+}
+
+.notification.top-left.exiting {
+  animation: slideOutNotificationLeft 0.3s var(--easing-smooth) forwards;
+}
+
+.notification.top-center {
+  animation: slideInNotificationCenter 0.3s var(--easing-smooth);
+}
+
+.notification.top-center.exiting {
+  animation: slideOutNotificationCenter 0.3s var(--easing-smooth) forwards;
+}
+
+.notification.bottom-right {
+  animation: slideInNotificationBottom 0.3s var(--easing-smooth);
+}
+
+.notification.bottom-right.exiting {
+  animation: slideOutNotificationBottom 0.3s var(--easing-smooth) forwards;
+}
+
+.notification.bottom-left {
+  animation: slideInNotificationBottomLeft 0.3s var(--easing-smooth);
+}
+
+.notification.bottom-left.exiting {
+  animation: slideOutNotificationBottomLeft 0.3s var(--easing-smooth) forwards;
+}
+
+.notification.bottom-center {
+  animation: slideInNotificationBottomCenter 0.3s var(--easing-smooth);
+}
+
+.notification.bottom-center.exiting {
+  animation: slideOutNotificationBottomCenter 0.3s var(--easing-smooth) forwards;
+}
+
+/* 🎭 ANIMACIONES ESPECÍFICAS POR POSICIÓN */
+@keyframes slideInNotificationLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideOutNotificationLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.9);
+  }
+}
+
+@keyframes slideInNotificationCenter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutNotificationCenter {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px) scale(0.9);
+  }
+}
+
+@keyframes slideInNotificationBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutNotificationBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%) scale(0.9);
+  }
+}
+
+@keyframes slideInNotificationBottomLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%) translateY(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutNotificationBottomLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%) translateY(100%) scale(0.9);
+  }
+}
+
+@keyframes slideInNotificationBottomCenter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutNotificationBottomCenter {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
+  }
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .notification {
+    max-width: calc(100vw - var(--spacing-lg) * 2);
+    min-width: 280px;
+    margin: 0 var(--spacing-md);
+  }
+  
+  .notification.top-center,
+  .notification.bottom-center {
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    transform: none;
+  }
+  
+  .notification-content {
+    padding: var(--spacing-md);
+  }
+  
+  .notification-message {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification {
+    max-width: calc(100vw - var(--spacing-md) * 2);
+    min-width: 260px;
+    margin: 0 var(--spacing-sm);
+  }
+  
+  .notification.top-right,
+  .notification.top-left,
+  .notification.bottom-right,
+  .notification.bottom-left {
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+  }
+  
+  .notification.top-center,
+  .notification.bottom-center {
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+  }
+  
+  .notification-content {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+  
+  .notification-message {
+    font-size: 0.8rem;
+  }
+  
+  .notification-icon {
+    margin-top: 1px;
+  }
+}
+
+/* 🌟 EFECTOS DE HOVER */
+.notification:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl), 0 0 30px rgba(252, 163, 17, 0.2);
+}
+
+/* 🎭 MEJORAS DE ACCESIBILIDAD */
+.notification:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.notification-close:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* 🌟 ESTADOS DE TRANSICIÓN */
+.notification {
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.notification:hover {
+  transition: all var(--transition-fast) var(--easing-smooth);
+}

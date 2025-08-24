@@ -1,0 +1,350 @@
+/* 🎭 ESTILOS DEL FOOTER */
+
+.footer {
+  background: linear-gradient(135deg, #0E0F19 0%, #37123C 100%);
+  border-top: 1px solid var(--glass-border);
+  margin-top: var(--spacing-xxl);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(252, 163, 17, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(107, 70, 193, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-xxl) var(--spacing-xl);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-xxl);
+  position: relative;
+  z-index: 2;
+}
+
+/* 🌟 MARCA DEL FOOTER */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.footer-logo img {
+  width: 170px;
+  height: 51px;
+  filter: brightness(0.9);
+  transition: filter var(--transition-medium) var(--easing-smooth);
+}
+
+.footer-logo:hover img {
+  filter: brightness(1);
+}
+
+.footer-description {
+  color: var(--color-gray-light);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-gray-subtle);
+  transition: all var(--transition-medium) var(--easing-smooth);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+}
+
+.social-link:hover {
+  color: var(--color-gray-light);
+  border-color: var(--color-gray-light);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 🎯 ENLACES DEL FOOTER */
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.footer-section-title {
+  color: var(--color-white);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  font-family: 'Satoshi', sans-serif;
+}
+
+.footer-section-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-gray-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  padding: var(--spacing-xs) 0;
+}
+
+.footer-link:hover {
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.footer-link svg {
+  color: var(--color-gray-subtle);
+  transition: color var(--transition-medium) var(--easing-smooth);
+}
+
+.footer-link:hover svg {
+  color: var(--color-primary);
+}
+
+/* 🌟 LÍNEA DIVISORIA */
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--glass-border) 50%,
+    transparent 100%
+  );
+  margin: 0 var(--spacing-xl);
+}
+
+/* 🎭 INFORMACIÓN INFERIOR */
+.footer-bottom {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.footer-copyright {
+  color: var(--color-gray-subtle);
+  font-size: 0.85rem;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.footer-bottom-link {
+  color: var(--color-gray-light);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color var(--transition-medium) var(--easing-smooth);
+}
+
+.footer-bottom-link:hover {
+  color: var(--color-primary);
+}
+
+/* 💖 MENSAJE DE AMOR */
+.footer-love {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  color: var(--color-gray-light);
+  font-size: 0.85rem;
+  padding: var(--spacing-md);
+  background: var(--glass-bg);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.heart-icon {
+  color: #EF4444;
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+  
+  .footer-links {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+  
+  .footer-bottom {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .footer-bottom-links {
+    justify-content: center;
+  }
+  
+  .footer-links {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  .footer-bottom {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .footer-section {
+    text-align: center;
+  }
+  
+  .footer-social {
+    justify-content: center;
+  }
+  
+  .footer-description {
+    text-align: center;
+    max-width: none;
+  }
+  
+  .footer-love {
+    max-width: none;
+    margin: 0 var(--spacing-sm);
+  }
+}
+
+/* 🌟 EFECTOS DE HOVER ADICIONALES */
+.footer-link {
+  position: relative;
+}
+
+.footer-link::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width var(--transition-medium) var(--easing-smooth);
+  transform: translateY(-50%);
+}
+
+.footer-link:hover::before {
+  width: 4px;
+}
+
+/* 🎭 ANIMACIONES DE ENTRADA */
+.footer {
+  animation: fadeInUp 0.8s var(--easing-smooth) 0.2s both;
+}
+
+.footer-brand {
+  animation: fadeInLeft 0.8s var(--easing-smooth) 0.4s both;
+}
+
+.footer-links {
+  animation: fadeInRight 0.8s var(--easing-smooth) 0.6s both;
+}
+
+.footer-bottom {
+  animation: fadeInUp 0.8s var(--easing-smooth) 0.8s both;
+}
+
+/* 🌟 MEJORAS DE ACCESIBILIDAD */
+.footer-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--border-radius-sm);
+}
+
+.social-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* 🎨 ESTADOS DE TRANSICIÓN */
+.footer-link,
+.social-link {
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.footer-link:hover,
+.social-link:hover {
+  transition: all var(--transition-fast) var(--easing-smooth);
+}
