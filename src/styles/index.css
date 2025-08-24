@@ -679,7 +679,25 @@
 
 @media (max-width: 480px) {
   .categories-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .category-card {
+    min-height: 140px;
+  }
+  
+  .category-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .category-content h3 {
+    font-size: 1rem;
+  }
+  
+  .category-icon svg {
+    width: 48px;
+    height: 48px;
   }
 }
 

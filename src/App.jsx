@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { NotificationProvider } from './contexts/NotificationContext'
-import AuthPage from './components/Auth/AuthPage'
+import WelcomePage from './components/Welcome/WelcomePage'
 import Dashboard from './pages/Dashboard'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
@@ -37,7 +37,7 @@ function AppContent() {
   }
 
   if (!user) {
-    return <AuthPage />
+    return <WelcomePage />
   }
 
   return <Dashboard />

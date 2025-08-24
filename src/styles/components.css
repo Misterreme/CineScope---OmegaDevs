@@ -21,7 +21,7 @@
 .header-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--spacing-md) var(--spacing-xl);
+  padding: calc(var(--spacing-md) + 0.5rem) var(--spacing-xl);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -148,10 +148,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px !important;
-  height: 44px !important;
-  min-width: 40px !important;
-  min-height: 44px !important;
+  width: 36px !important;
+  height: 40px !important;
+  min-width: 36px !important;
+  min-height: 40px !important;
   border: none;
   border-radius: var(--border-radius-sm);
   background: transparent;
@@ -168,18 +168,20 @@
   transform: translateY(-1px);
 }
 
-.search-button:hover svg {
-  color: var(--color-white) !important;
-  fill: var(--color-white) !important;
-  stroke: var(--color-white) !important;
+.search-button:hover .search-icon-img {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(1) contrast(1);
 }
 
-.search-button svg {
-  width: 36px !important;
-  height: 36px !important;
-  color: var(--color-gray-light) !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
+.search-button .search-icon-img {
+  width: 26px !important;
+  height: 26px !important;
+  filter: brightness(0) saturate(100%) invert(90%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.9) contrast(1);
+  transition: filter var(--transition-medium) var(--easing-smooth);
+}
+
+.search-button .search-icon-img.mobile {
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .saved-button.active {
@@ -1175,7 +1177,7 @@
 
 @media (max-width: 768px) {
   .header-content {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: calc(var(--spacing-sm) + 0.25rem) var(--spacing-md);
     gap: var(--spacing-md);
     justify-content: space-between;
     align-items: center;
@@ -1262,7 +1264,7 @@
 
 @media (max-width: 480px) {
   .header-content {
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: calc(var(--spacing-xs) + 0.25rem) var(--spacing-sm);
     gap: var(--spacing-sm);
     justify-content: space-between;
     align-items: center;

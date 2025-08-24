@@ -153,7 +153,11 @@ const Header = ({ activeTab, onTabChange }) => {
           <div className="header-actions">
             {/* Botón de búsqueda */}
             <button className="search-button" onClick={handleSearchClick}>
-              <Search size={36} />
+              <img 
+                src="/search-icon.svg" 
+                alt="Buscar" 
+                className="search-icon-img"
+              />
             </button>
 
             {/* Botón de guardados - Solo visible en desktop */}
@@ -300,7 +304,11 @@ const Header = ({ activeTab, onTabChange }) => {
                 e.stopPropagation();
                 handleSearchClick();
               }}>
-                <Search size={20} />
+                <img 
+                  src="/search-icon.svg" 
+                  alt="Buscar" 
+                  className="search-icon-img mobile"
+                />
                 <span>Buscar</span>
               </button>
               <button className="mobile-help-btn" onClick={(e) => {

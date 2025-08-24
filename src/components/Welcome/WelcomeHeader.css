@@ -1,0 +1,427 @@
+/* 🎭 HEADER DE BIENVENIDA */
+
+.welcome-header {
+  background: rgba(14, 15, 25, 0.8);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  backdrop-filter: var(--backdrop-blur);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.welcome-header.scrolled {
+  background: rgba(14, 15, 25, 0.95);
+  border-bottom: 2px solid var(--color-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.welcome-header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: calc(var(--spacing-md) + 0.5rem) var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+}
+
+/* 🎯 LOGO DE BIENVENIDA */
+.welcome-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Satoshi', sans-serif;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.welcome-logo:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 20px var(--color-primary);
+}
+
+.welcome-logo img {
+  width: 160px;
+  height: auto;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.welcome-logo:hover img {
+  filter: drop-shadow(0 0 10px var(--color-primary));
+}
+
+/* 🧭 NAVEGACIÓN PRINCIPAL DE BIENVENIDA */
+.welcome-main-nav {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.welcome-nav-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  font-size: 0.9rem;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-nav-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  transition: left var(--transition-medium) var(--easing-smooth);
+  z-index: -1;
+}
+
+.welcome-nav-button:hover::before {
+  left: 0;
+}
+
+.welcome-nav-button:hover {
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+/* 🎯 ACCIONES DEL HEADER DE BIENVENIDA */
+.welcome-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-shrink: 0;
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+/* 🧭 NAVEGACIÓN PRINCIPAL DE BIENVENIDA - AHORA EN HEADER ACTIONS */
+.welcome-main-nav {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+/* 🔐 BOTÓN DE LOGIN EN HEADER */
+.welcome-login-btn {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  font-family: 'Inter', sans-serif;
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+}
+
+.welcome-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, #E67E22 0%, #FCA311 100%);
+}
+
+/* 🍔 BOTÓN HAMBURGUESA DE BIENVENIDA */
+.welcome-mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-medium) var(--easing-smooth);
+  width: 40px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-mobile-menu-toggle:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 📱 MENÚ MÓVIL DE BIENVENIDA */
+.welcome-mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(14, 15, 25, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+  transform: translateX(-100%);
+  transition: transform var(--transition-medium) var(--easing-smooth);
+  overflow-y: auto;
+  padding-top: 80px;
+}
+
+.welcome-mobile-menu.open {
+  transform: translateX(0);
+}
+
+/* ❌ BOTÓN DE CERRAR MENÚ MÓVIL DE BIENVENIDA */
+.welcome-mobile-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-medium) var(--easing-smooth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.welcome-mobile-close-btn:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+/* 🧭 SECCIONES DEL MENÚ MÓVIL DE BIENVENIDA */
+.welcome-mobile-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.welcome-mobile-section-title {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-md);
+  padding: 0 var(--spacing-xl);
+  opacity: 0.8;
+}
+
+/* 🧭 NAVEGACIÓN MÓVIL DE BIENVENIDA */
+.welcome-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-xl);
+}
+
+.welcome-mobile-nav-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.welcome-mobile-nav-button:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border);
+}
+
+.welcome-mobile-nav-button svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* 📱 LÍNEA DIVISORIA MÓVIL */
+.welcome-mobile-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--glass-border) 50%,
+    transparent 100%
+  );
+  margin: var(--spacing-lg) var(--spacing-xl);
+}
+
+/* 🎯 ACCIONES MÓVILES */
+.welcome-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-xl);
+}
+
+.welcome-mobile-login-btn {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  font-family: 'Inter', sans-serif;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  text-align: center;
+}
+
+.welcome-mobile-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, #E67E22 0%, #FCA311 100%);
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+  .welcome-main-nav {
+    display: none !important;
+  }
+  
+  .welcome-mobile-menu-toggle {
+    display: flex !important;
+  }
+  
+  .welcome-header-content {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .welcome-logo img {
+    width: 120px !important;
+  }
+  
+  .desktop-login-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-header-content {
+    padding: calc(var(--spacing-sm) + 0.25rem) var(--spacing-md);
+    gap: var(--spacing-md);
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    min-height: auto;
+  }
+  
+  .welcome-logo {
+    flex-shrink: 0;
+    order: 1;
+    display: flex;
+    align-items: center;
+    height: auto;
+  }
+  
+  .welcome-logo img {
+    width: 120px !important;
+    height: auto;
+  }
+  
+  .welcome-main-nav {
+    display: none !important;
+  }
+  
+  .welcome-header-actions {
+    gap: var(--spacing-sm);
+    align-items: center;
+    flex-shrink: 0;
+    order: 2;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    height: auto;
+  }
+  
+  .welcome-mobile-menu-toggle {
+    display: flex !important;
+    flex-shrink: 0;
+  }
+  
+  .welcome-mobile-menu {
+    padding-top: 70px;
+  }
+  
+  .welcome-mobile-nav,
+  .welcome-mobile-section-title {
+    padding: 0 var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-header-content {
+    padding: calc(var(--spacing-xs) + 0.25rem) var(--spacing-sm);
+    gap: var(--spacing-sm);
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    min-height: auto;
+  }
+  
+  .welcome-logo {
+    flex-shrink: 0;
+    order: 1;
+    display: flex;
+    align-items: center;
+    height: auto;
+  }
+  
+  .welcome-logo img {
+    width: 120px !important;
+    height: auto;
+  }
+  
+  .welcome-header-actions {
+    gap: var(--spacing-xs);
+    align-items: center;
+    flex-shrink: 0;
+    order: 2;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    height: auto;
+  }
+  
+  .welcome-mobile-menu-toggle {
+    display: flex !important;
+    flex-shrink: 0;
+  }
+  
+  .welcome-mobile-nav-button {
+    font-size: 0.9rem;
+    padding: var(--spacing-sm);
+  }
+  
+  .welcome-mobile-nav,
+  .welcome-mobile-section-title {
+    padding: 0 var(--spacing-md);
+  }
+}

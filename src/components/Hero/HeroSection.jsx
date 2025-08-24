@@ -77,13 +77,20 @@ const HeroSection = () => {
                   {slide.description}
                 </p>
                 
-                {/* Llamado a la acción solo en la primera diapositiva */}
-                {slide.id === 1 && (
-                  <div className="hero-cta-text">
-                    <span className="cta-text">Desliza para empezar</span>
-                    <div className="cta-arrow-down">↓</div>
-                  </div>
-                )}
+                {/* Botón de acción en todas las diapositivas */}
+                <div className="hero-cta-button">
+                  <button 
+                    className="hero-login-btn"
+                    onClick={() => {
+                      const authSection = document.querySelector('.auth-section')
+                      if (authSection) {
+                        authSection.scrollIntoView({ behavior: 'smooth' })
+                      }
+                    }}
+                  >
+                    Iniciar Sesión
+                  </button>
+                </div>
               </div>
             </div>
           </div>
