@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS user_movie_lists (
     title VARCHAR(500) NOT NULL,
     year VARCHAR(10),
     poster TEXT,
-    list_type VARCHAR(20) NOT NULL CHECK (list_type IN ('watchlist', 'watched')),
+    list_type VARCHAR(20) NOT NULL CHECK (list_type IN ('watchlist', 'watched', 'saved', 'favorites')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     

@@ -92,16 +92,12 @@ const MovieGrid = ({
     
     if (title.includes('Películas')) {
       items.push({ label: 'Películas', path: '/movies' })
-    } else if (title.includes('Series')) {
-      items.push({ label: 'Series', path: '/series' })
-    } else if (title.includes('Documentales')) {
-      items.push({ label: 'Documentales', path: '/documentaries' })
-    } else if (title.includes('Infantil')) {
-      items.push({ label: 'Infantil', path: '/kids' })
     } else if (title.includes('Continuar')) {
       items.push({ label: 'Continuar Viendo', path: '/continue' })
-    } else if (title.includes('Guardado')) {
-      items.push({ label: 'Guardados', path: '/saved' })
+    } else if (title.includes('Mi Lista')) {
+      items.push({ label: 'Mi Lista', path: '/saved' })
+    } else if (title.includes('Vistas')) {
+      items.push({ label: 'Vistas', path: '/watched' })
     }
     
     return items

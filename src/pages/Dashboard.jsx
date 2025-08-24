@@ -27,8 +27,8 @@ const Dashboard = () => {
   const [popularMovies, setPopularMovies] = useState([])
   const [newReleases, setNewReleases] = useState([])
   const [recommendedMovies, setRecommendedMovies] = useState([])
-  const [continueWatching, setContinueWatching] = useState([])
-  const [userLists, setUserLists] = useState({ watchlist: [], watched: [] })
+  const [savedMovies, setSavedMovies] = useState([])
+  const [userLists, setUserLists] = useState({ watchlist: [], watched: [], saved: [], favorites: [] })
   const [loading, setLoading] = useState(false)
   const [categoryMovies, setCategoryMovies] = useState([])
   const [currentCategory, setCurrentCategory] = useState(null)
@@ -119,8 +119,27 @@ const Dashboard = () => {
     
     // Load user lists
     const listsResult = await listService.getUserLists(user.id)
+    console.log('=== LOADING INITIAL DATA ===')
+    console.log('User ID:', user.id)
+    console.log('Lists result:', listsResult)
+    console.log('Favorites count:', listsResult.favorites?.length || 0)
+    console.log('Watchlist count:', listsResult.watchlist?.length || 0)
+    console.log('Watched count:', listsResult.watched?.length || 0)
+    
     if (listsResult.success) {
       setUserLists(listsResult)
+      console.log('User lists set successfully:', listsResult)
+      console.log('State after setUserLists:', {
+        favorites: listsResult.favorites,
+        watchlist: listsResult.watchlist,
+        watched: listsResult.watched
+      })
+      console.log('Favorites details:', {
+        count: listsResult.favorites?.length || 0,
+        items: listsResult.favorites?.map(f => ({ id: f.imdb_id, title: f.title })) || []
+      })
+    } else {
+      console.error('Failed to load user lists:', listsResult.error)
     }
 
     // Load popular movies for initial display
@@ -130,7 +149,12 @@ const Dashboard = () => {
       // Simular datos para las nuevas secciones
       setNewReleases(popularResult.movies.slice(0, 8))
       setRecommendedMovies(popularResult.movies.slice(0, 6))
-      setContinueWatching(popularResult.movies.slice(0, 4))
+      // Mostrar películas guardadas del usuario
+      if (listsResult.success && listsResult.watchlist.length > 0) {
+        setSavedMovies(listsResult.watchlist.slice(0, 4))
+      } else {
+        setSavedMovies([])
+      }
     }
 
     setLoading(false)
@@ -138,21 +162,55 @@ const Dashboard = () => {
 
 
 
-  const handleAddToList = () => {
+  const handleAddToList = async () => {
     // Refresh user lists when a movie is added/removed
-    loadInitialData()
+    if (user) {
+      console.log('=== REFRESHING USER LISTS ===')
+      console.log('User ID:', user.id)
+      console.log('Current userLists state:', userLists)
+      
+      const listsResult = await listService.getUserLists(user.id)
+      console.log('Lists result from API:', listsResult)
+      
+      if (listsResult.success) {
+        console.log('Setting new user lists:', listsResult)
+        console.log('Favorites in new result:', listsResult.favorites)
+        console.log('Watchlist in new result:', listsResult.watchlist)
+        console.log('Watched in new result:', listsResult.watched)
+        
+        setUserLists(listsResult)
+        
+        // Verificar que el estado se actualizó
+        setTimeout(() => {
+          console.log('State after setUserLists (delayed):', userLists)
+          console.log('Favorites count after update:', userLists.favorites?.length || 0)
+        }, 100)
+      } else {
+        console.error('Failed to get user lists:', listsResult.error)
+      }
+    }
   }
 
   const handleCategoryClick = async (categoryId) => {
+    console.log('=== CATEGORY CLICK ===')
+    console.log('Category ID:', categoryId)
+    console.log('Current activeTab:', activeTab)
+    
     setCurrentCategory(categoryId)
     setLoading(true)
     
     try {
+      console.log('Fetching movies for category:', categoryId)
       const result = await movieService.getMoviesByCategory(categoryId)
+      console.log('Category result:', result)
+      
       if (result.success) {
+        console.log('Setting category movies:', result.movies)
         setCategoryMovies(result.movies)
         setActiveTab(categoryId)
+        console.log('ActiveTab changed to:', categoryId)
       } else {
+        console.error('Category fetch failed:', result.error)
         setCategoryMovies([])
         setActiveTab(categoryId)
       }
@@ -162,6 +220,7 @@ const Dashboard = () => {
       setActiveTab(categoryId)
     } finally {
       setLoading(false)
+      console.log('Category loading finished')
     }
   }
 
@@ -202,12 +261,17 @@ const Dashboard = () => {
           />
         </section>
 
-        {/* Continuar Viendo */}
-        <section className="content-section-continue">
-          <h2 className="section-title">Continuar viendo</h2>
-          {continueWatching.length > 0 ? (
+        {/* Mi Lista - Quiero Ver */}
+        <section className="content-section-saved">
+          <h2 className="section-title">Mi Lista - Quiero Ver</h2>
+          {userLists.watchlist && userLists.watchlist.length > 0 ? (
             <MovieGrid
-              movies={continueWatching}
+              movies={userLists.watchlist.map(item => ({
+                imdbID: item.imdb_id,
+                Title: item.title,
+                Year: item.year,
+                Poster: item.poster
+              }))}
               loading={loading}
               title=""
               onAddToList={handleAddToList}
@@ -218,8 +282,35 @@ const Dashboard = () => {
               itemsPerPage={4}
             />
           ) : (
-            <div className="empty-continue">
-              <p>No tienes contenido en progreso. ¡Empieza a ver algo!</p>
+            <div className="empty-saved">
+              <p>No tienes películas en tu lista. ¡Explora y agrega algunas!</p>
+            </div>
+          )}
+        </section>
+
+        {/* Mis Favoritos */}
+        <section className="content-section-favorites">
+          <h2 className="section-title">Mis Favoritos</h2>
+          {userLists.favorites && userLists.favorites.length > 0 ? (
+            <MovieGrid
+              movies={userLists.favorites.map(item => ({
+                imdbID: item.imdb_id,
+                Title: item.title,
+                Year: item.year,
+                Poster: item.poster
+              }))}
+              loading={loading}
+              title=""
+              onAddToList={handleAddToList}
+              userLists={userLists}
+              emptyMessage=""
+              showFilters={false}
+              showPagination={false}
+              itemsPerPage={4}
+            />
+          ) : (
+            <div className="empty-favorites">
+              <p>No tienes películas favoritas. ¡Agrega algunas!</p>
             </div>
           )}
         </section>
@@ -259,25 +350,38 @@ const Dashboard = () => {
       case 'home':
         return renderHomeContent()
 
-      case 'watchlist': {
+      case 'saved': {
         const watchlistMovies = userLists.watchlist.map(item => ({
           imdbID: item.imdb_id,
           Title: item.title,
           Year: item.year,
           Poster: item.poster
         }))
+        
         return (
-          <MovieGrid
-            movies={watchlistMovies}
-            loading={loading}
-            title="Quiero Ver"
-            onAddToList={handleAddToList}
-            userLists={userLists}
-            emptyMessage="No tienes películas en tu lista 'Quiero Ver'. ¡Explora y agrega algunas!"
-          />
+          <div className="content-section">
+            <h2 className="section-title page-title">Mi Lista - Quiero Ver</h2>
+            {watchlistMovies.length > 0 ? (
+              <MovieGrid
+                movies={watchlistMovies}
+                loading={loading}
+                title=""
+                onAddToList={handleAddToList}
+                userLists={userLists}
+                emptyMessage=""
+                showFilters={true}
+                showPagination={true}
+                itemsPerPage={12}
+              />
+            ) : (
+              <div className="empty-state">
+                <p>No tienes películas en tu lista. ¡Explora y agrega algunas!</p>
+              </div>
+            )}
+          </div>
         )
       }
-
+      
       case 'watched': {
         const watchedMovies = userLists.watched.map(item => ({
           imdbID: item.imdb_id,
@@ -285,15 +389,28 @@ const Dashboard = () => {
           Year: item.year,
           Poster: item.poster
         }))
+        
         return (
-          <MovieGrid
-            movies={watchedMovies}
-            loading={loading}
-            title="Ya Vistas"
-            onAddToList={handleAddToList}
-            userLists={userLists}
-            emptyMessage="No has marcado ninguna película como vista. ¡Empieza a llevar tu registro!"
-          />
+          <div className="content-section">
+            <h2 className="section-title page-title">Películas Vistas</h2>
+            {watchedMovies.length > 0 ? (
+              <MovieGrid
+                movies={watchedMovies}
+                loading={loading}
+                title=""
+                onAddToList={handleAddToList}
+                userLists={userLists}
+                emptyMessage=""
+                showFilters={true}
+                showPagination={true}
+                itemsPerPage={12}
+              />
+            ) : (
+              <div className="empty-state">
+                <p>No has marcado ninguna película como vista. ¡Empieza a llevar tu registro!</p>
+              </div>
+            )}
+          </div>
         )
       }
 
@@ -309,117 +426,38 @@ const Dashboard = () => {
           />
         )
 
-      case 'series':
+      case 'favorites': {
+        const favoritesMovies = userLists.favorites.map(item => ({
+          imdbID: item.imdb_id,
+          Title: item.title,
+          Year: item.year,
+          Poster: item.poster
+        }))
+        
         return (
-          <div className="coming-soon-section">
-            <div className="coming-soon-content">
-              <div className="coming-soon-icon">📺</div>
-              <h2 className="coming-soon-title">Series - Próximamente</h2>
-              <p className="coming-soon-description">
-                Estamos preparando una increíble colección de series para ti. 
-                Muy pronto podrás disfrutar de temporadas completas, episodios exclusivos 
-                y las mejores producciones televisivas.
-              </p>
-              <div className="coming-soon-features">
-                <div className="feature-item">
-                  <span className="feature-icon">🎬</span>
-                  <span>Series completas</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">📱</span>
-                  <span>Disponible en todos los dispositivos</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">⭐</span>
-                  <span>Contenido exclusivo</span>
-                </div>
+          <div className="content-section">
+            <h2 className="section-title page-title">Mis Favoritos</h2>
+            {favoritesMovies.length > 0 ? (
+              <MovieGrid
+                movies={favoritesMovies}
+                loading={loading}
+                title=""
+                onAddToList={handleAddToList}
+                userLists={userLists}
+                emptyMessage=""
+                showFilters={true}
+                showPagination={true}
+                itemsPerPage={12}
+              />
+            ) : (
+              <div className="empty-state">
+                <p>No tienes películas favoritas. ¡Agrega algunas!</p>
               </div>
-            </div>
+            )}
           </div>
         )
-
-      case 'documentaries':
-        return (
-          <div className="coming-soon-section">
-            <div className="coming-soon-content">
-              <div className="coming-soon-icon">🎥</div>
-              <h2 className="coming-soon-title">Documentales - Próximamente</h2>
-              <p className="coming-soon-description">
-                Prepárate para explorar el mundo a través de documentales fascinantes. 
-                Desde naturaleza y ciencia hasta historia y cultura, tendremos contenido 
-                educativo y entretenido para toda la familia.
-              </p>
-              <div className="coming-soon-features">
-                <div className="feature-item">
-                  <span className="feature-icon">🌍</span>
-                  <span>Mundo natural</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">🔬</span>
-                  <span>Ciencia y tecnología</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">📚</span>
-                  <span>Historia y cultura</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-
-      case 'kids':
-        return (
-          <div className="coming-soon-section">
-            <div className="coming-soon-content">
-              <div className="coming-soon-icon">🧸</div>
-              <h2 className="coming-soon-title">Contenido Infantil - Próximamente</h2>
-              <p className="coming-soon-description">
-                Los más pequeños de la casa tendrán su propio espacio en CineScope. 
-                Contenido educativo, divertido y seguro para niños de todas las edades, 
-                con series animadas y películas familiares.
-              </p>
-              <div className="coming-soon-features">
-                <div className="feature-item">
-                  <span className="feature-icon">🎨</span>
-                  <span>Animación de calidad</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">📚</span>
-                  <span>Contenido educativo</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">🛡️</span>
-                  <span>100% seguro para niños</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-
-      case 'continue':
-        return (
-          <MovieGrid
-            movies={popularMovies}
-            loading={loading}
-            title="Continuar Viendo"
-            onAddToList={handleAddToList}
-            userLists={userLists}
-            emptyMessage="No tienes contenido en progreso. ¡Empieza a ver algo!"
-          />
-        )
-
-      case 'saved':
-        return (
-          <MovieGrid
-            movies={popularMovies}
-            loading={loading}
-            title="Contenido Guardado"
-            onAddToList={handleAddToList}
-            userLists={userLists}
-            emptyMessage="No tienes contenido guardado. ¡Guarda tus favoritos!"
-          />
-        )
-
+      }
+      
       // Casos para categorías
       case 'action':
       case 'comedy':
@@ -430,21 +468,73 @@ const Dashboard = () => {
       case 'fantasy':
       case 'mystery':
       case 'adventure':
-      case 'thriller':
+      case 'thriller': {
         const categoryName = categories.find(cat => cat.id === activeTab)?.name || 'Categoría'
+        
         return (
-          <MovieGrid
-            movies={categoryMovies}
-            loading={loading}
-            title={`${categoryName} - Películas`}
-            onAddToList={handleAddToList}
-            userLists={userLists}
-            emptyMessage={`No se encontraron películas de ${categoryName.toLowerCase()}. ¡Intenta con otra categoría!`}
-          />
+          <div className="content-section">
+            <h2 className="section-title">{categoryName}</h2>
+            {categoryMovies.length > 0 ? (
+              <MovieGrid
+                movies={categoryMovies}
+                loading={loading}
+                title={`Películas de ${categoryName}`}
+                onAddToList={handleAddToList}
+                userLists={userLists}
+                emptyMessage=""
+                showFilters={true}
+                showPagination={true}
+                itemsPerPage={12}
+              />
+            ) : (
+              <div className="empty-state">
+                {loading ? (
+                  <p>Cargando películas de {categoryName}...</p>
+                ) : (
+                  <p>No se encontraron películas en esta categoría.</p>
+                )}
+              </div>
+            )}
+          </div>
         )
-
-      default:
-        return null
+      }
+      
+      default: {
+        // Si no es un caso específico, verificar si es una categoría
+        const category = categories.find(cat => cat.id === activeTab)
+        if (category) {
+          const categoryName = category.name
+          return (
+            <div className="content-section">
+              <h2 className="section-title">{categoryName}</h2>
+              {categoryMovies.length > 0 ? (
+                <MovieGrid
+                  movies={categoryMovies}
+                  loading={loading}
+                  title={`Películas de ${categoryName}`}
+                  onAddToList={handleAddToList}
+                  userLists={userLists}
+                  emptyMessage=""
+                  showFilters={true}
+                  showPagination={true}
+                  itemsPerPage={12}
+                />
+              ) : (
+                <div className="empty-state">
+                  {loading ? (
+                    <p>Cargando películas de {categoryName}...</p>
+                  ) : (
+                    <p>No se encontraron películas en esta categoría.</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        }
+        
+        // Si no es una categoría, mostrar el contenido por defecto
+        return renderHomeContent()
+      }
     }
   }
 

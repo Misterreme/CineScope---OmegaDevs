@@ -38,8 +38,8 @@ const Footer = () => {
             <img src="/logo.svg" alt="CineScope" />
           </div>
           <p className="footer-description">
-            Descubre el mundo del cine con CineScope. Miles de películas y series 
-            en un solo lugar con diseño cinematográfico premium.
+            Descubre el mundo del cine con CineScope. Miles de películas en un solo lugar
+            con diseño cinematográfico premium.
           </p>
           <div className="footer-social">
             {socialLinks.map((social, index) => {

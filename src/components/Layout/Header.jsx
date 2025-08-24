@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn } from 'lucide-react'
+import { movieService } from '../../services/movieService'
+import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye } from 'lucide-react'
 
 const Header = ({ activeTab, onTabChange }) => {
   const { user, signOut } = useAuth()
@@ -12,6 +13,8 @@ const Header = ({ activeTab, onTabChange }) => {
   const [searchResults, setSearchResults] = useState([])
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSearchLoading, setIsSearchLoading] = useState(false)
+  const [searchTimeout, setSearchTimeout] = useState(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,30 +57,43 @@ const Header = ({ activeTab, onTabChange }) => {
     setIsMobileMenuOpen(false)
   }
 
-  const handleSearchInputChange = (e) => {
+  const handleSearchInputChange = async (e) => {
     const query = e.target.value
     setSearchQuery(query)
+    
+    // Limpiar timeout anterior
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
+    }
     
     // Filtrar películas según la consulta
     if (query.trim() === '') {
       setSearchResults([])
+      setIsSearchLoading(false)
     } else {
-      // Aquí implementarías la lógica de búsqueda real
-      // Por ahora simulamos resultados
-      const mockResults = [
-        { id: 1, title: 'Avengers: Endgame', year: '2019', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 2, title: 'Spider-Man: No Way Home', year: '2021', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 3, title: 'Black Panther', year: '2018', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 4, title: 'Doctor Strange', year: '2016', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 5, title: 'Thor: Ragnarok', year: '2017', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 6, title: 'Captain Marvel', year: '2019', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 7, title: 'Iron Man', year: '2008', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' },
-        { id: 8, title: 'Guardians of the Galaxy', year: '2014', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&h=300&fit=crop&crop=center' }
-      ].filter(movie => 
-        movie.title.toLowerCase().includes(query.toLowerCase()) ||
-        movie.year.includes(query)
-      )
-      setSearchResults(mockResults)
+      // Debounce: esperar 500ms después de que el usuario deje de escribir
+      const timeout = setTimeout(async () => {
+        setIsSearchLoading(true)
+        try {
+          console.log('Searching for:', query)
+          const result = await movieService.searchMovies(query, 1)
+          
+          if (result.success) {
+            console.log('Search results:', result.movies)
+            setSearchResults(result.movies)
+          } else {
+            console.error('Search failed:', result.error)
+            setSearchResults([])
+          }
+        } catch (error) {
+          console.error('Error during search:', error)
+          setSearchResults([])
+        } finally {
+          setIsSearchLoading(false)
+        }
+      }, 500)
+      
+      setSearchTimeout(timeout)
     }
   }
 
@@ -85,12 +101,23 @@ const Header = ({ activeTab, onTabChange }) => {
     setIsSearchModalOpen(false)
     setSearchQuery('')
     setSearchResults([])
+    setIsSearchLoading(false)
+    
+    // Limpiar timeout si existe
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
+      setSearchTimeout(null)
+    }
   }
 
   const handleMovieClick = (movie) => {
-    // Aquí puedes implementar la navegación a la página de la película
     console.log('Película seleccionada:', movie)
+    // Aquí puedes implementar la navegación a la página de la película
+    // Por ejemplo, cambiar a un tab específico o navegar a una ruta
     closeSearchModal()
+    
+    // Opcional: Mostrar la película en el dashboard
+    // Puedes implementar una función para mostrar detalles de la película
   }
 
   return (
@@ -110,47 +137,35 @@ const Header = ({ activeTab, onTabChange }) => {
             />
           </div>
 
-          {/* Navegación principal - Desktop */}
-          <nav className="main-nav desktop-nav">
-            <button
-              className={`nav-button ${activeTab === 'movies' ? 'active' : ''}`}
-              onClick={() => handleTabChange('movies')}
-            >
-              <Film size={16} />
-              <span>Películas</span>
-            </button>
-            <button
-              className={`nav-button ${activeTab === 'series' ? 'active' : ''}`}
-              onClick={() => handleTabChange('series')}
-            >
-              <Tv size={16} />
-              <span>Series</span>
-            </button>
-            <button
-              className={`nav-button ${activeTab === 'documentaries' ? 'active' : ''}`}
-              onClick={() => handleTabChange('documentaries')}
-            >
-              <BookOpen size={16} />
-              <span>Documentales</span>
-            </button>
-            <button
-              className={`nav-button ${activeTab === 'kids' ? 'active' : ''}`}
-              onClick={() => handleTabChange('kids')}
-            >
-              <Baby size={16} />
-              <span>Infantil</span>
-            </button>
-            <button
-              className={`nav-button ${activeTab === 'continue' ? 'active' : ''}`}
-              onClick={() => handleTabChange('continue')}
-            >
-              <Clock size={16} />
-              <span>Continuar viendo</span>
-            </button>
-          </nav>
-
           {/* Acciones del header - Derecha */}
           <div className="header-actions">
+            {/* Navegación principal */}
+            <nav className="main-nav desktop-nav">
+              <button
+                className={`nav-button ${activeTab === 'home' ? 'active' : ''}`}
+                onClick={() => handleTabChange('home')}
+              >
+                <Home size={16} />
+                <span>Inicio</span>
+              </button>
+              
+              <button
+                className={`nav-button ${activeTab === 'saved' ? 'active' : ''}`}
+                onClick={() => handleTabChange('saved')}
+              >
+                <Bookmark size={16} />
+                <span>Mi Lista</span>
+              </button>
+              
+              <button
+                className={`nav-button ${activeTab === 'watched' ? 'active' : ''}`}
+                onClick={() => handleTabChange('watched')}
+              >
+                <Eye size={16} />
+                <span>Visto</span>
+              </button>
+            </nav>
+
             {/* Botón de búsqueda */}
             <button className="search-button" onClick={handleSearchClick}>
               <img 
@@ -160,10 +175,10 @@ const Header = ({ activeTab, onTabChange }) => {
               />
             </button>
 
-            {/* Botón de guardados - Solo visible en desktop */}
+            {/* Botón de favoritos - Solo visible en desktop */}
             <button
-              className={`saved-button desktop-saved ${activeTab === 'saved' ? 'active' : ''}`}
-              onClick={() => handleTabChange('saved')}
+              className={`favorites-button desktop-favorites ${activeTab === 'favorites' ? 'active' : ''}`}
+              onClick={() => handleTabChange('favorites')}
             >
               <Heart size={20} />
             </button>
@@ -178,10 +193,6 @@ const Header = ({ activeTab, onTabChange }) => {
               <div className="user-dropdown">
                 <div className="dropdown-header">
                   <span className="user-name">{user?.user_metadata?.full_name || user?.email}</span>
-                </div>
-                <div className="dropdown-item" onClick={() => handleTabChange('saved')}>
-                  <Heart size={16} />
-                  <span>Favoritos</span>
                 </div>
                 <div className="dropdown-item">
                   <Settings size={16} />
@@ -223,68 +234,52 @@ const Header = ({ activeTab, onTabChange }) => {
           {/* Sección de navegación principal */}
           <div className="mobile-section" onClick={(e) => e.stopPropagation()}>
             <h3 className="mobile-section-title">Navegación</h3>
-            <nav className="mobile-nav">
+            {/* Navegación móvil */}
+            <div className="mobile-nav">
               <button
-                className={`mobile-nav-button ${activeTab === 'movies' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleTabChange('movies');
+                className={`mobile-nav-button ${activeTab === 'home' ? 'active' : ''}`}
+                onClick={() => {
+                  handleTabChange('home');
+                  setIsMobileMenuOpen(false);
                 }}
               >
-                <Film size={20} />
-                <span>Películas</span>
+                <Home size={20} />
+                <span>Inicio</span>
               </button>
-              <button
-                className={`mobile-nav-button ${activeTab === 'series' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleTabChange('series');
-                }}
-              >
-                <Tv size={20} />
-                <span>Series</span>
-              </button>
-              <button
-                className={`mobile-nav-button ${activeTab === 'documentaries' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleTabChange('documentaries');
-                }}
-              >
-                <BookOpen size={20} />
-                <span>Documentales</span>
-              </button>
-              <button
-                className={`mobile-nav-button ${activeTab === 'kids' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleTabChange('kids');
-                }}
-              >
-                <Baby size={20} />
-                <span>Infantil</span>
-              </button>
-              <button
-                className={`mobile-nav-button ${activeTab === 'continue' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleTabChange('continue');
-                }}
-              >
-                <Clock size={20} />
-                <span>Continuar viendo</span>
-              </button>
+              
               <button
                 className={`mobile-nav-button ${activeTab === 'saved' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   handleTabChange('saved');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <Bookmark size={20} />
+                <span>Mi Lista</span>
+              </button>
+              
+              <button
+                className={`mobile-nav-button ${activeTab === 'favorites' ? 'active' : ''}`}
+                onClick={() => {
+                  handleTabChange('favorites');
+                  setIsMobileMenuOpen(false);
                 }}
               >
                 <Heart size={20} />
                 <span>Favoritos</span>
               </button>
-            </nav>
+              
+              <button
+                className={`mobile-nav-button ${activeTab === 'watched' ? 'active' : ''}`}
+                onClick={() => {
+                  handleTabChange('watched');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <Eye size={20} />
+                <span>Visto</span>
+              </button>
+            </div>
           </div>
 
           {/* Línea divisoria */}
@@ -300,17 +295,6 @@ const Header = ({ activeTab, onTabChange }) => {
               <span className="mobile-user-name">{user?.user_metadata?.full_name || user?.email}</span>
             </div>
             <div className="mobile-actions">
-              <button className="mobile-search-btn" onClick={(e) => {
-                e.stopPropagation();
-                handleSearchClick();
-              }}>
-                <img 
-                  src="/search-icon.svg" 
-                  alt="Buscar" 
-                  className="search-icon-img mobile"
-                />
-                <span>Buscar</span>
-              </button>
               <button className="mobile-help-btn" onClick={(e) => {
                 e.stopPropagation();
                 handleHelpClick();
@@ -347,11 +331,15 @@ const Header = ({ activeTab, onTabChange }) => {
                 <Search size={20} className="search-icon" />
                 <input
                   type="text"
-                  placeholder="Buscar películas, series, actores..."
-                  value={searchQuery}
-                  onChange={handleSearchInputChange}
                   className="search-modal-input"
-                  autoFocus
+                  placeholder="Buscar películas, actores..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                 />
               </div>
               <button className="close-search-btn" onClick={closeSearchModal}>
@@ -363,8 +351,8 @@ const Header = ({ activeTab, onTabChange }) => {
               {searchQuery.trim() === '' ? (
                 <div className="search-placeholder">
                   <Search size={48} />
-                  <h3>Busca tu contenido favorito</h3>
-                  <p>Escribe para encontrar películas, series y más</p>
+                  <h3>¿Qué quieres ver hoy?</h3>
+                  <p>Escribe para encontrar películas y más</p>
                 </div>
               ) : searchResults.length > 0 ? (
                 <div className="search-results-grid">

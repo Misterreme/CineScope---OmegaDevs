@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import './HeroSection.css';
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { user } = useAuth();
 
   // Datos del carrusel con contenido para cinéfilos
   const slides = [
@@ -79,17 +81,19 @@ const HeroSection = () => {
                 
                 {/* Botón de acción en todas las diapositivas */}
                 <div className="hero-cta-button">
-                  <button 
-                    className="hero-login-btn"
-                    onClick={() => {
-                      const authSection = document.querySelector('.auth-section')
-                      if (authSection) {
-                        authSection.scrollIntoView({ behavior: 'smooth' })
-                      }
-                    }}
-                  >
-                    Iniciar Sesión
-                  </button>
+                  {!user ? (
+                    <button 
+                      className="hero-login-btn"
+                      onClick={() => {
+                        const authSection = document.querySelector('.auth-section')
+                        if (authSection) {
+                          authSection.scrollIntoView({ behavior: 'smooth' })
+                        }
+                      }}
+                    >
+                      Iniciar Sesión
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </div>

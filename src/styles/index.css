@@ -166,7 +166,7 @@
 /* 🎭 SECCIONES DE LA PÁGINA PRINCIPAL */
 .content-section-new,
 .content-section-recommended,
-.content-section-continue,
+.content-section-saved,
 .content-section-categories {
   margin-bottom: var(--spacing-xxl);
 }
@@ -308,8 +308,8 @@
   box-shadow: var(--shadow-md);
 }
 
-/* 🎭 ESTADO VACÍO PARA CONTINUAR VIENDO */
-.empty-continue {
+/* 🎭 ESTADO VACÍO PARA PELÍCULAS GUARDADAS */
+.empty-saved {
   text-align: center;
   padding: var(--spacing-xxl);
   background: var(--glass-bg);
@@ -419,7 +419,7 @@
   }
 }
 
-.empty-continue p {
+.empty-saved p {
   color: var(--color-gray-light);
   font-size: 1.1rem;
   margin: 0;
