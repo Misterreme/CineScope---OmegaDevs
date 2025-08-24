@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X } from 'lucide-react'
+import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn } from 'lucide-react'
 
 const Header = ({ activeTab, onTabChange }) => {
   const { user, signOut } = useAuth()
@@ -11,6 +11,7 @@ const Header = ({ activeTab, onTabChange }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,10 +33,25 @@ const Header = ({ activeTab, onTabChange }) => {
 
   const handleLogoClick = () => {
     onTabChange('home')
+    setIsMobileMenuOpen(false)
   }
 
   const handleHelpClick = () => {
     navigate('/help')
+    setIsMobileMenuOpen(false)
+  }
+
+  const handleTabChange = (tab) => {
+    onTabChange(tab)
+    setIsMobileMenuOpen(false)
+  }
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
   }
 
   const handleSearchInputChange = (e) => {
@@ -81,75 +97,75 @@ const Header = ({ activeTab, onTabChange }) => {
     <>
       <header className={`app-header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="header-content">
-          {/* Logo */}
+          {/* Logo - Izquierda */}
           <div className="logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
             <img
               src="/logo.svg"
               alt="CineScope"
               style={{
-                width: isSearchActive ? '160px' : '140px',
+                width: isSearchActive ? '180px' : '160px',
                 height: 'auto',
                 transition: 'width 0.3s ease'
               }}
             />
           </div>
 
-          {/* Navegación principal */}
-          <nav className="main-nav">
+          {/* Navegación principal - Desktop */}
+          <nav className="main-nav desktop-nav">
             <button
               className={`nav-button ${activeTab === 'movies' ? 'active' : ''}`}
-              onClick={() => onTabChange('movies')}
+              onClick={() => handleTabChange('movies')}
             >
               <Film size={16} />
               <span>Películas</span>
             </button>
             <button
               className={`nav-button ${activeTab === 'series' ? 'active' : ''}`}
-              onClick={() => onTabChange('series')}
+              onClick={() => handleTabChange('series')}
             >
               <Tv size={16} />
               <span>Series</span>
             </button>
             <button
               className={`nav-button ${activeTab === 'documentaries' ? 'active' : ''}`}
-              onClick={() => onTabChange('documentaries')}
+              onClick={() => handleTabChange('documentaries')}
             >
               <BookOpen size={16} />
               <span>Documentales</span>
             </button>
             <button
               className={`nav-button ${activeTab === 'kids' ? 'active' : ''}`}
-              onClick={() => onTabChange('kids')}
+              onClick={() => handleTabChange('kids')}
             >
               <Baby size={16} />
               <span>Infantil</span>
             </button>
             <button
               className={`nav-button ${activeTab === 'continue' ? 'active' : ''}`}
-              onClick={() => onTabChange('continue')}
+              onClick={() => handleTabChange('continue')}
             >
               <Clock size={16} />
               <span>Continuar viendo</span>
             </button>
           </nav>
 
-          {/* Acciones del header */}
+          {/* Acciones del header - Derecha */}
           <div className="header-actions">
             {/* Botón de búsqueda */}
             <button className="search-button" onClick={handleSearchClick}>
-              <Search size={44} />
+              <Search size={36} />
             </button>
 
-            {/* Botón de guardados */}
+            {/* Botón de guardados - Solo visible en desktop */}
             <button
-              className={`saved-button ${activeTab === 'saved' ? 'active' : ''}`}
-              onClick={() => onTabChange('saved')}
+              className={`saved-button desktop-saved ${activeTab === 'saved' ? 'active' : ''}`}
+              onClick={() => handleTabChange('saved')}
             >
               <Heart size={20} />
             </button>
 
-            {/* Menú de usuario */}
-            <div className="user-menu">
+            {/* Menú de usuario - Solo visible en desktop */}
+            <div className="user-menu desktop-user-menu">
               <div className="user-avatar">
                 <User size={24} />
                 <ChevronDown size={16} className="chevron" />
@@ -159,7 +175,7 @@ const Header = ({ activeTab, onTabChange }) => {
                 <div className="dropdown-header">
                   <span className="user-name">{user?.user_metadata?.full_name || user?.email}</span>
                 </div>
-                <div className="dropdown-item" onClick={() => onTabChange('saved')}>
+                <div className="dropdown-item" onClick={() => handleTabChange('saved')}>
                   <Heart size={16} />
                   <span>Favoritos</span>
                 </div>
@@ -181,6 +197,134 @@ const Header = ({ activeTab, onTabChange }) => {
                   <span>Cerrar sesión</span>
                 </div>
               </div>
+            </div>
+
+            {/* Botón hamburguesa para móvil */}
+            <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Menú móvil */}
+        <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} onClick={closeMobileMenu}>
+          {/* Botón de cerrar */}
+          <button className="mobile-close-btn" onClick={(e) => {
+            e.stopPropagation();
+            closeMobileMenu();
+          }}>
+            <X size={20} />
+          </button>
+          
+          {/* Sección de navegación principal */}
+          <div className="mobile-section" onClick={(e) => e.stopPropagation()}>
+            <h3 className="mobile-section-title">Navegación</h3>
+            <nav className="mobile-nav">
+              <button
+                className={`mobile-nav-button ${activeTab === 'movies' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTabChange('movies');
+                }}
+              >
+                <Film size={20} />
+                <span>Películas</span>
+              </button>
+              <button
+                className={`mobile-nav-button ${activeTab === 'series' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTabChange('series');
+                }}
+              >
+                <Tv size={20} />
+                <span>Series</span>
+              </button>
+              <button
+                className={`mobile-nav-button ${activeTab === 'documentaries' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTabChange('documentaries');
+                }}
+              >
+                <BookOpen size={20} />
+                <span>Documentales</span>
+              </button>
+              <button
+                className={`mobile-nav-button ${activeTab === 'kids' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTabChange('kids');
+                }}
+              >
+                <Baby size={20} />
+                <span>Infantil</span>
+              </button>
+              <button
+                className={`mobile-nav-button ${activeTab === 'continue' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTabChange('continue');
+                }}
+              >
+                <Clock size={20} />
+                <span>Continuar viendo</span>
+              </button>
+              <button
+                className={`mobile-nav-button ${activeTab === 'saved' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTabChange('saved');
+                }}
+              >
+                <Heart size={20} />
+                <span>Favoritos</span>
+              </button>
+            </nav>
+          </div>
+
+          {/* Línea divisoria */}
+          <div className="mobile-divider"></div>
+
+          {/* Sección de usuario */}
+          <div className="mobile-section">
+            <h3 className="mobile-section-title">Usuario</h3>
+            <div className="mobile-user-info">
+              <div className="mobile-user-avatar">
+                <User size={24} />
+              </div>
+              <span className="mobile-user-name">{user?.user_metadata?.full_name || user?.email}</span>
+            </div>
+            <div className="mobile-actions">
+              <button className="mobile-search-btn" onClick={(e) => {
+                e.stopPropagation();
+                handleSearchClick();
+              }}>
+                <Search size={20} />
+                <span>Buscar</span>
+              </button>
+              <button className="mobile-help-btn" onClick={(e) => {
+                e.stopPropagation();
+                handleHelpClick();
+              }}>
+                <HelpCircle size={20} />
+                <span>Ayuda</span>
+              </button>
+              <button className="mobile-settings-btn" onClick={(e) => e.stopPropagation()}>
+                <Settings size={20} />
+                <span>Ajustes</span>
+              </button>
+              <button className="mobile-account-btn" onClick={(e) => e.stopPropagation()}>
+                <User size={20} />
+                <span>Cuenta</span>
+              </button>
+              <button className="mobile-logout-btn" onClick={(e) => {
+                e.stopPropagation();
+                handleSignOut();
+              }}>
+                <LogOut size={20} />
+                <span>Cerrar sesión</span>
+              </button>
             </div>
           </div>
         </div>
