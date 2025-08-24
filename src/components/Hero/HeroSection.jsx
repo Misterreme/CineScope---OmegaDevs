@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroSection.css';
 
 const HeroSection = () => {
@@ -38,10 +39,6 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [slides.length]);
 
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
-
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
@@ -60,7 +57,7 @@ const HeroSection = () => {
             className={`hero-slide ${index === currentSlide ? 'active' : ''}`}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
-                        {/* Overlay oscuro con gradiente */}
+            {/* Overlay oscuro con gradiente */}
             <div className="hero-overlay">
               <div className="hero-overlay-gradient"></div>
             </div>
@@ -93,26 +90,14 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Controles del carrusel */}
-      <div className="hero-carousel-controls">
-        <button className="carousel-control prev" onClick={prevSlide}>
-          <span className="control-arrow">‹</span>
-        </button>
-        
-        <div className="carousel-indicators">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${index === currentSlide ? 'active' : ''}`}
-              onClick={() => goToSlide(index)}
-            />
-          ))}
-        </div>
-        
-        <button className="carousel-control next" onClick={nextSlide}>
-          <span className="control-arrow">›</span>
-        </button>
-      </div>
+      {/* Flechas discretas en los lados */}
+      <button className="hero-nav-arrow hero-nav-left" onClick={prevSlide}>
+        <ChevronLeft size={24} />
+      </button>
+      
+      <button className="hero-nav-arrow hero-nav-right" onClick={nextSlide}>
+        <ChevronRight size={24} />
+      </button>
 
       {/* Elementos decorativos flotantes */}
       <div className="hero-floating-elements">

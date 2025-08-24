@@ -135,6 +135,43 @@
   color: var(--color-primary);
 }
 
+/* 🎯 BOTÓN DEL FOOTER (REEMPLAZA AL ENLACE) */
+.footer-link-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-gray-light);
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  padding: var(--spacing-xs) 0;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.footer-link-button:hover {
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.footer-link-button svg {
+  color: var(--color-gray-subtle);
+  transition: color var(--transition-medium) var(--easing-smooth);
+}
+
+.footer-link-button:hover svg {
+  color: var(--color-primary);
+}
+
+.footer-link-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--border-radius-sm);
+}
+
 /* 🌟 LÍNEA DIVISORIA */
 .footer-divider {
   height: 1px;

@@ -1,17 +1,19 @@
 import React from 'react';
 import { Heart, Github, Twitter, Instagram, Mail, Shield, FileText, HelpCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
   const footerSections = [
     {
       title: 'Legal',
       links: [
-        { label: 'Política de Privacidad', href: '/privacy', icon: Shield },
-        { label: 'Términos de Uso', href: '/terms', icon: FileText },
-        { label: 'Ayuda', href: '/help', icon: HelpCircle }
+        { label: 'Política de Privacidad', path: '/privacy', icon: Shield },
+        { label: 'Términos de Uso', path: '/terms', icon: FileText },
+        { label: 'Ayuda', path: '/help', icon: HelpCircle }
       ]
     }
   ];
@@ -22,6 +24,10 @@ const Footer = () => {
     { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
     { icon: Mail, href: 'mailto:info@cinescope.com', label: 'Email' }
   ];
+
+  const handleLegalLinkClick = (path) => {
+    navigate(path);
+  };
 
   return (
     <footer className="footer">
@@ -64,10 +70,13 @@ const Footer = () => {
                   const Icon = link.icon;
                   return (
                     <li key={linkIndex}>
-                      <a href={link.href} className="footer-link">
+                      <button 
+                        onClick={() => handleLegalLinkClick(link.path)}
+                        className="footer-link-button"
+                      >
                         {Icon && <Icon size={16} />}
                         <span>{link.label}</span>
-                      </a>
+                      </button>
                     </li>
                   );
                 })}

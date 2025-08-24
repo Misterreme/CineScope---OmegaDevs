@@ -23,11 +23,7 @@ function AppContent() {
     )
   }
 
-  if (!user) {
-    return <AuthPage />
-  }
-
-  // Check if we're on a legal/help page
+  // Check if we're on a legal/help page - these should be accessible without auth
   const isLegalPage = ['/privacy', '/terms', '/help'].includes(location.pathname)
 
   if (isLegalPage) {
@@ -38,6 +34,10 @@ function AppContent() {
         <Route path="/help" element={<Help />} />
       </Routes>
     )
+  }
+
+  if (!user) {
+    return <AuthPage />
   }
 
   return <Dashboard />
