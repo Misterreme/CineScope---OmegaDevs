@@ -149,7 +149,7 @@
 }
 
 .hero-login-btn {
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   color: var(--color-white);
   border: none;
   padding: var(--spacing-md) var(--spacing-xl);

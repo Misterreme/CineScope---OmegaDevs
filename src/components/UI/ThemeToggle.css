@@ -1,0 +1,119 @@
+/* 🌙 TEMA TOGGLE BUTTON */
+.theme-toggle {
+  background: var(--bg-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: var(--backdrop-blur);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(252, 163, 17, 0.3);
+  background: var(--color-primary);
+}
+
+.theme-toggle:hover .theme-toggle-sun,
+.theme-toggle:hover .theme-toggle-moon {
+  color: var(--bg-primary);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.theme-toggle-sun,
+.theme-toggle-moon {
+  color: var(--color-primary);
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.theme-toggle:hover .theme-toggle-sun,
+.theme-toggle:hover .theme-toggle-moon {
+  transform: rotate(15deg);
+  filter: drop-shadow(0 0 8px var(--color-primary));
+}
+
+/* Tamaños del botón */
+.theme-toggle--small {
+  width: 36px;
+  height: 36px;
+}
+
+.theme-toggle--small .theme-toggle-sun,
+.theme-toggle--small .theme-toggle-moon {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle--medium {
+  width: 42px;
+  height: 42px;
+}
+
+.theme-toggle--medium .theme-toggle-sun,
+.theme-toggle--medium .theme-toggle-moon {
+  width: 20px;
+  height: 20px;
+}
+
+.theme-toggle--large {
+  width: 48px;
+  height: 48px;
+}
+
+.theme-toggle--large .theme-toggle-sun,
+.theme-toggle--large .theme-toggle-moon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Efecto de brillo al hacer hover */
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(252, 163, 17, 0.2),
+    transparent
+  );
+  transition: left var(--transition-slow) var(--easing-smooth);
+}
+
+.theme-toggle:hover::before {
+  left: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .theme-toggle--medium {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .theme-toggle--medium .theme-toggle-sun,
+  .theme-toggle--medium .theme-toggle-moon {
+    width: 18px;
+    height: 18px;
+  }
+}

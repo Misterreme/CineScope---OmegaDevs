@@ -89,7 +89,7 @@
 }
 
 .filter-label {
-  color: var(--color-gray-light);
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -123,6 +123,10 @@
   background: var(--color-dark-secondary);
   color: var(--color-white);
   padding: var(--spacing-sm);
+}
+
+.filter-description {
+  color: var(--text-secondary);
 }
 
 /* 🎭 BOTONES DE ACCIÓN */

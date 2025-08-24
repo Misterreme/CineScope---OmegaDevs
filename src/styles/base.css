@@ -16,11 +16,12 @@ html {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--color-dark-primary);
-  color: var(--color-white);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
   font-weight: 400;
   overflow-x: hidden;
+  transition: background-color var(--transition-medium) var(--easing-smooth), color var(--transition-medium) var(--easing-smooth);
 }
 
 /* 🎭 TIPOGRAFÍA JERÁRQUICA */
@@ -35,9 +36,9 @@ h1 {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 32px;
-  color: #E5E5E5;
+  color: var(--text-primary);
   line-height: 1.2em;
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -47,7 +48,7 @@ h2 {
   font-family: 'Satoshi', sans-serif;
   font-weight: 500;
   font-size: 24px;
-  color: #4C6C6C;
+  color: var(--text-secondary);
   line-height: 1.2;
 }
 
@@ -55,7 +56,7 @@ h3 {
   font-family: 'Satoshi', sans-serif;
   font-weight: 500;
   font-size: 20px;
-  color: var(--color-white);
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -63,7 +64,7 @@ h4 {
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 18px;
-  color: var(--color-gray-light);
+  color: var(--text-secondary);
   line-height: 1.2;
 }
 
@@ -71,7 +72,7 @@ h5 {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 16px;
-  color: var(--color-gray-light);
+  color: var(--text-secondary);
   line-height: 1.2;
 }
 
@@ -79,14 +80,14 @@ h6 {
   font-family: 'Inter', sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: var(--color-gray-subtle);
+  color: var(--text-muted);
   line-height: 1.2;
 }
 
 p {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  color: var(--color-gray-light);
+  color: var(--text-secondary);
   margin-bottom: var(--spacing-md);
 }
 
@@ -116,7 +117,7 @@ a:hover {
 
 /* 🎨 CLASES DE UTILIDAD */
 .text-gradient {
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

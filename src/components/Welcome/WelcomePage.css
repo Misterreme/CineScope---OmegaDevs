@@ -46,7 +46,7 @@
   color: var(--color-white);
   margin-bottom: var(--spacing-lg);
   font-family: 'Satoshi', sans-serif;
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -150,7 +150,7 @@
 }
 
 .welcome-category-btn {
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   color: var(--color-white);
   border: none;
   padding: var(--spacing-sm) var(--spacing-md);
@@ -167,6 +167,14 @@
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   background: linear-gradient(135deg, #E67E22 0%, #FCA311 100%);
+}
+
+.welcome-description {
+  color: var(--text-secondary);
+}
+
+.category-description {
+  color: var(--text-secondary);
 }
 
 /* 🔐 SECCIÓN DE AUTENTICACIÓN */
@@ -219,7 +227,7 @@
   color: var(--color-white);
   margin-bottom: var(--spacing-lg);
   font-family: 'Satoshi', sans-serif;
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -254,7 +262,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--gradient-primary);
+  background: var(--solid-primary);
   z-index: 1;
 }
 
@@ -262,7 +270,7 @@
 
 /* 🎨 BOTONES DE AUTENTICACIÓN CON COLORES DE MARCA */
 .auth-form .auth-button {
-  background: var(--gradient-primary) !important;
+  background: var(--solid-primary) !important;
   color: var(--color-white) !important;
   border: none !important;
   padding: var(--spacing-md) var(--spacing-xl) !important;

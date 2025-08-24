@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn } from 'lucide-react'
+import ThemeToggle from '../UI/ThemeToggle'
 
 const Header = ({ activeTab, onTabChange }) => {
   const { user, signOut } = useAuth()
@@ -151,6 +152,9 @@ const Header = ({ activeTab, onTabChange }) => {
 
           {/* Acciones del header - Derecha */}
           <div className="header-actions">
+            {/* Botón de cambio de tema */}
+            <ThemeToggle size="medium" />
+            
             {/* Botón de búsqueda */}
             <button className="search-button" onClick={handleSearchClick}>
               <img 
@@ -300,6 +304,10 @@ const Header = ({ activeTab, onTabChange }) => {
               <span className="mobile-user-name">{user?.user_metadata?.full_name || user?.email}</span>
             </div>
             <div className="mobile-actions">
+              <button className="mobile-theme-btn" onClick={(e) => e.stopPropagation()}>
+                <ThemeToggle size="small" />
+                <span>Cambiar tema</span>
+              </button>
               <button className="mobile-search-btn" onClick={(e) => {
                 e.stopPropagation();
                 handleSearchClick();

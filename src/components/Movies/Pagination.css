@@ -122,6 +122,7 @@
 /* 📊 INFORMACIÓN DE PÁGINAS */
 .pagination-info {
   text-align: center;
+  color: var(--text-secondary);
 }
 
 .pagination-text {
@@ -134,6 +135,10 @@
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--backdrop-blur);
   -webkit-backdrop-filter: var(--backdrop-blur);
+}
+
+.pagination-extra {
+  color: var(--text-secondary);
 }
 
 /* 📱 RESPONSIVE DESIGN */

@@ -1,7 +1,7 @@
 /* 🎭 ESTILOS PARA PÁGINAS LEGALES */
 .legal-page {
   min-height: 100vh;
-  background: var(--gradient-dark);
+  background: var(--solid-dark);
   padding: var(--spacing-xl) 0;
 }
 
