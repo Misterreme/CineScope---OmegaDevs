@@ -1,0 +1,496 @@
+/* 🎬 PÁGINA DE DETALLES DE PELÍCULA */
+.movie-details-page {
+  min-height: 100vh;
+  background: var(--color-dark-primary);
+  color: var(--color-white);
+  padding: 0;
+}
+
+/* 📱 HEADER DE DETALLES */
+.movie-details-header {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--color-dark-secondary);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-medium) var(--easing-smooth);
+  font-size: 0.9rem;
+}
+
+.back-button:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-2px);
+}
+
+/* 🎭 HERO SECTION */
+.movie-hero {
+  background: linear-gradient(135deg, var(--color-dark-secondary) 0%, var(--color-dark-primary) 100%);
+  padding: var(--spacing-xxl) var(--spacing-xl);
+}
+
+.movie-hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--spacing-xxl);
+  align-items: start;
+}
+
+.movie-poster-large {
+  position: sticky;
+  top: 120px;
+}
+
+.movie-poster-large img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 4px solid var(--color-primary);
+}
+
+.movie-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.movie-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.movie-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-gray-light);
+  font-size: 0.9rem;
+}
+
+.meta-item svg {
+  color: var(--color-primary);
+}
+
+.movie-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.genre-tag {
+  background: var(--color-primary);
+  color: var(--color-dark-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.movie-plot {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--color-gray-light);
+  max-width: 600px;
+}
+
+/* 🎯 ENLACES DE ACCIÓN */
+.movie-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.action-link {
+  color: #fca311;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  padding: var(--spacing-xs) 0;
+}
+
+/* Botón de Marcar como Vista (Verde) */
+.action-btn.watched {
+  background: #156064;
+  color: var(--color-white);
+  border-color: #156064;
+}
+
+.action-btn.watched:hover {
+  background: #1a7a7f;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.action-btn.watched.active {
+  background: #0d4a4d;
+  color: var(--color-white);
+}
+
+/* Botón de Guardar (Morado) */
+.action-btn.saved {
+  background: #37123c;
+  color: var(--color-white);
+}
+
+.action-btn.saved:hover {
+  background: #4a1a51;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.action-btn.saved.active {
+  background: #2a0e2e;
+  color: var(--color-white);
+}
+
+
+
+/* Asegurar que los iconos sean visibles */
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+  color: inherit;
+}
+
+/* Asegurar que los iconos tengan el tamaño correcto */
+.action-btn .loading-spinner {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+
+
+
+
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Efectos especiales para los botones */
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.action-btn:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+.action-btn > * {
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.action-btn:hover > * {
+  transform: scale(1.1);
+}
+
+/* 📋 CONTENIDO DE DETALLES */
+.movie-details-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xxl) var(--spacing-xl);
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xxl);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.detail-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.detail-section.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-section h3 {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-md) 0;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.detail-section p {
+  color: var(--color-gray-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.genre-item {
+  background: var(--color-dark-secondary);
+  color: var(--color-gray-light);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+  border: 1px solid var(--color-border);
+}
+
+/* ⭐ CALIFICACIÓN */
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.rating-star {
+  color: var(--color-primary);
+}
+
+.rating-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.rating-max {
+  color: var(--color-gray-light);
+  font-size: 1rem;
+}
+
+.rating-votes {
+  color: var(--color-gray-subtle);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* 🔗 ENLACES */
+.website-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-medium) var(--easing-smooth);
+}
+
+.website-link:hover {
+  color: var(--color-white);
+  text-decoration: underline;
+}
+
+/* 🔄 LOADING Y ERROR */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl);
+  color: var(--color-gray-light);
+  min-height: 400px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Spinner para botones de acción */
+.movie-actions .loading-spinner {
+  width: 16px;
+  height: 16px;
+  margin-bottom: 0;
+  border-width: 2px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container p {
+  font-size: 1.1rem;
+  color: var(--color-error);
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+  .movie-hero-content {
+    grid-template-columns: 250px 1fr;
+    gap: var(--spacing-xl);
+  }
+  
+  .movie-title {
+    font-size: 2.5rem;
+  }
+  
+  .details-grid {
+    gap: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-hero {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+  
+  .movie-hero-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    text-align: center;
+  }
+  
+  .movie-poster-large {
+    position: static;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .movie-title {
+    font-size: 2rem;
+  }
+  
+  .movie-meta {
+    justify-content: center;
+  }
+  
+  .movie-genres {
+    justify-content: center;
+  }
+  
+  .movie-plot {
+    text-align: center;
+  }
+  
+  .movie-actions {
+    justify-content: center;
+  }
+  
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .movie-details-content {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-hero {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  .movie-title {
+    font-size: 1.8rem;
+  }
+  
+  .movie-meta {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+  
+  .movie-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .movie-details-content {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}
+
+/* 🌙 TEMA OSCURO - Ajustes adicionales */
+[data-theme="dark"] .movie-details-page {
+  background: var(--color-dark-primary);
+}
+
+[data-theme="dark"] .movie-details-header {
+  background: var(--color-dark-secondary);
+}
+
+/* 🌟 EFECTOS ESPECIALES */
+.movie-poster-large img {
+  transition: transform var(--transition-medium) var(--easing-smooth);
+}
+
+.movie-poster-large:hover img {
+  transform: scale(1.02);
+}
+
+.genre-tag {
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.genre-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 🔍 ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+  .movie-poster-large img,
+  .genre-tag,
+  .action-btn {
+    transition: none;
+    transform: none;
+  }
+} 

@@ -1,0 +1,212 @@
+/* 🎭 SELECTOR DE AVATARES */
+.avatar-selector {
+  background: var(--color-dark-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.avatar-selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.avatar-selector-header h3 {
+  margin: 0;
+  color: var(--color-white);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.regenerate-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-smooth);
+}
+
+.regenerate-btn:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.regenerate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.regenerate-btn .spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Grid de avatares */
+.avatars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.avatar-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm);
+  background: var(--color-dark-primary);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-smooth);
+  overflow: hidden;
+}
+
+.avatar-option:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.avatar-option.selected {
+  border-color: var(--color-primary);
+  background: rgba(252, 163, 17, 0.1);
+  box-shadow: 0 0 20px rgba(252, 163, 17, 0.3);
+}
+
+.avatar-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: var(--spacing-sm);
+  transition: transform var(--transition-fast) var(--easing-smooth);
+}
+
+.avatar-option:hover .avatar-image {
+  transform: scale(1.05);
+}
+
+.avatar-option.selected .avatar-image {
+  transform: scale(1.1);
+}
+
+.avatar-check {
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50%;
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Footer de selección */
+.avatar-selection-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background: var(--color-dark-primary);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.avatar-selection-footer p {
+  margin: 0;
+  color: var(--color-gray-light);
+  font-size: 0.9rem;
+}
+
+.avatar-selection-footer strong {
+  color: var(--color-white);
+}
+
+.confirm-avatar-btn {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-smooth);
+}
+
+.confirm-avatar-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .avatar-selector {
+    padding: var(--spacing-lg);
+  }
+  
+  .avatar-selector-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .avatars-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .avatar-option {
+    padding: var(--spacing-sm);
+  }
+  
+  .avatar-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .avatar-selection-footer {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .avatar-image {
+    width: 50px;
+    height: 50px;
+  }
+}

@@ -5,10 +5,14 @@ import { NotificationProvider } from './contexts/NotificationContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import WelcomePage from './components/Welcome/WelcomePage'
 import Dashboard from './pages/Dashboard'
+import Settings from './pages/Settings'
+import Account from './pages/Account'
+import MovieDetails from './pages/MovieDetails'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import Help from './pages/Help'
 import ErrorBoundary from './components/ErrorBoundary'
+import ScrollToTop from './components/UI/ScrollToTop'
 import './App.css'
 
 function AppContent() {
@@ -37,11 +41,26 @@ function AppContent() {
     )
   }
 
+  if (user && location.pathname === '/settings') {
+    return <Settings />
+  }
+
+  if (user && location.pathname === '/account') {
+    return <Account />
+  }
+
   if (!user) {
     return <WelcomePage />
   }
 
-  return <Dashboard />
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/settings" element={<Settings />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/movie/:imdbId" element={<MovieDetails />} />
+    </Routes>
+  )
 }
 
 function App() {
@@ -53,6 +72,7 @@ function App() {
             <ThemeProvider>
               <div className="app theme-transition">
                 <AppContent />
+                <ScrollToTop />
               </div>
             </ThemeProvider>
           </NotificationProvider>

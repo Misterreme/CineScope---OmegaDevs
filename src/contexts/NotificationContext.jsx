@@ -1,112 +1,92 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import Notification from '../components/UI/Notification';
+import React, { createContext, useContext, useState, useCallback } from 'react'
+import SuccessNotification from '../components/UI/SuccessNotification'
 
-const NotificationContext = createContext();
+const NotificationContext = createContext()
 
-export const useNotifications = () => {
-  const context = useContext(NotificationContext);
+export const useNotification = () => {
+  const context = useContext(NotificationContext)
   if (!context) {
-    throw new Error('useNotifications debe ser usado dentro de NotificationProvider');
+    throw new Error('useNotification must be used within a NotificationProvider')
   }
-  return context;
-};
+  return context
+}
 
 export const NotificationProvider = ({ children }) => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([])
 
-  const addNotification = useCallback(({ 
-    message, 
-    type = 'info', 
-    duration = 5000, 
-    position = 'top-right' 
-  }) => {
-    const id = Date.now() + Math.random();
+  const showNotification = useCallback((message, type = 'success', duration = 3000) => {
+    const id = Date.now() + Math.random()
     const newNotification = {
       id,
       message,
       type,
-      duration,
-      position
-    };
-
-    setNotifications(prev => [...prev, newNotification]);
-
-    // Auto-remove after duration
-    if (duration > 0) {
-      setTimeout(() => {
-        removeNotification(id);
-      }, duration);
+      duration
     }
 
-    return id;
-  }, []);
+    setNotifications(prev => [...prev, newNotification])
+
+    // Auto-remove after duration + animation time
+    setTimeout(() => {
+      removeNotification(id)
+    }, duration + 300)
+  }, [])
 
   const removeNotification = useCallback((id) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
-  }, []);
+    setNotifications(prev => prev.filter(notification => notification.id !== id))
+  }, [])
 
-  const showSuccess = useCallback((message, options = {}) => {
-    return addNotification({
-      message,
-      type: 'success',
-      ...options
-    });
-  }, [addNotification]);
+  const showSuccess = useCallback((message, duration) => {
+    showNotification(message, 'success', duration)
+  }, [showNotification])
 
-  const showError = useCallback((message, options = {}) => {
-    return addNotification({
-      message,
-      type: 'error',
-      ...options
-    });
-  }, [addNotification]);
+  const showError = useCallback((message, duration) => {
+    showNotification(message, 'error', duration)
+  }, [showNotification])
 
-  const showWarning = useCallback((message, options = {}) => {
-    return addNotification({
-      message,
-      type: 'warning',
-      ...options
-    });
-  }, [addNotification]);
+  const showMovieActionSuccess = useCallback((action, movieTitle, isAdding = true) => {
+    let message = ''
+    
+    switch (action) {
+      case 'watchlist':
+        message = isAdding 
+          ? `"${movieTitle}" agregada a tu lista` 
+          : `"${movieTitle}" removida de tu lista`
+        break
+      case 'watched':
+        message = isAdding 
+          ? `"${movieTitle}" marcada como vista` 
+          : `"${movieTitle}" removida de vistas`
+        break
+      default:
+        message = isAdding 
+          ? `"${movieTitle}" agregada exitosamente` 
+          : `"${movieTitle}" removida exitosamente`
+    }
 
-  const showInfo = useCallback((message, options = {}) => {
-    return addNotification({
-      message,
-      type: 'info',
-      ...options
-    });
-  }, [addNotification]);
-
-  const clearAll = useCallback(() => {
-    setNotifications([]);
-  }, []);
+    showSuccess(message, 3000)
+  }, [showSuccess])
 
   const value = {
-    addNotification,
-    removeNotification,
+    showNotification,
     showSuccess,
     showError,
-    showWarning,
-    showInfo,
-    clearAll,
-    notifications
-  };
+    showMovieActionSuccess,
+    removeNotification
+  }
 
   return (
     <NotificationContext.Provider value={value}>
       {children}
-      
-      {/* Renderizar notificaciones */}
+      {/* Render notifications */}
       {notifications.map(notification => (
-        <Notification
+        <SuccessNotification
           key={notification.id}
           message={notification.message}
           type={notification.type}
           duration={notification.duration}
-          position={notification.position}
           onClose={() => removeNotification(notification.id)}
         />
       ))}
     </NotificationContext.Provider>
-  );
-};
+  )
+}

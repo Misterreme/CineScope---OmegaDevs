@@ -10,6 +10,7 @@ class ListService {
         .from('user_movie_lists')
         .select('*')
         .eq('user_id', userId)
+        .order('created_at', { ascending: false })
 
       if (error) {
         console.error('Error getting user lists:', error)
@@ -21,14 +22,12 @@ class ListService {
       const result = {
         watchlist: data.filter(item => item.list_type === 'watchlist'),
         watched: data.filter(item => item.list_type === 'watched'),
-        saved: data.filter(item => item.list_type === 'saved'),
-        favorites: data.filter(item => item.list_type === 'favorites'),
         success: true
       }
       
       console.log('Filtered result:', result)
-      console.log('Favorites count:', result.favorites.length)
-      console.log('Saved count:', result.saved.length)
+
+      console.log('Watchlist count:', result.watchlist.length)
       console.log('Watched count:', result.watched.length)
       
       return result
@@ -37,8 +36,6 @@ class ListService {
       return {
         watchlist: [],
         watched: [],
-        saved: [],
-        favorites: [],
         success: false,
         error: error.message
       }
@@ -51,8 +48,23 @@ class ListService {
       console.log('User ID:', userId)
       console.log('Movie:', movie)
       console.log('List Type:', listType)
+      console.log('Movie.imdbID type:', typeof movie.imdbID)
+      console.log('Movie.imdbID value:', movie.imdbID)
       
+      // Validate input parameters
+      if (!userId || !movie || !movie.imdbID || !listType) {
+        console.error('Invalid parameters:', { userId, movie: movie?.imdbID, listType })
+        return {
+          data: null,
+          success: false,
+          error: 'Parámetros inválidos'
+        }
+      }
+
+      console.log('✅ Parameters validated successfully')
+
       // Check if movie already exists in this specific list for this user
+      console.log('🔍 Checking if movie already exists...')
       const { data: existing, error: existingError } = await supabase
         .from('user_movie_lists')
         .select('*')
@@ -61,61 +73,79 @@ class ListService {
         .eq('list_type', listType)
 
       if (existingError) {
-        console.error('Error checking existing:', existingError)
+        console.error('❌ Error checking existing:', existingError)
+        console.error('Error details:', {
+          code: existingError.code,
+          message: existingError.message,
+          details: existingError.details,
+          hint: existingError.hint
+        })
         throw existingError
       }
 
+      console.log('✅ Existing check completed')
       console.log('Existing entries found:', existing)
+      console.log('Existing entries count:', existing?.length || 0)
 
       if (existing && existing.length > 0) {
-        // Update existing entry
-        console.log('Updating existing entry')
-        const { data, error } = await supabase
-          .from('user_movie_lists')
-          .update({ 
-            list_type: listType,
-            updated_at: new Date().toISOString()
-          })
-          .eq('user_id', userId)
-          .eq('imdb_id', movie.imdbID)
-          .select()
-
-        if (error) {
-          console.error('Error updating:', error)
-          throw error
-        }
-        
-        console.log('Update successful:', data)
-        return { data: data[0], success: true }
+        // Movie already exists in this list, return success
+        console.log('✅ Movie already exists in this list')
+        return { data: existing[0], success: true }
       } else {
         // Create new entry
-        console.log('Creating new entry')
+        console.log('🆕 Creating new entry...')
+        const insertData = {
+          user_id: userId,
+          imdb_id: movie.imdbID,
+          title: movie.Title || 'Unknown Title',
+          year: movie.Year || 'Unknown Year',
+          poster: movie.Poster || null,
+          list_type: listType
+        }
+        
+        console.log('📝 Insert data:', insertData)
+        console.log('🔗 Supabase connection test...')
+        
+        // Test connection first
+        const { data: testData, error: testError } = await supabase
+          .from('user_movie_lists')
+          .select('count')
+          .limit(1)
+        
+        if (testError) {
+          console.error('❌ Supabase connection test failed:', testError)
+          throw testError
+        }
+        
+        console.log('✅ Supabase connection successful')
+        
         const { data, error } = await supabase
           .from('user_movie_lists')
-          .insert({
-            user_id: userId,
-            imdb_id: movie.imdbID,
-            title: movie.Title,
-            year: movie.Year,
-            poster: movie.Poster,
-            list_type: listType
-          })
+          .insert(insertData)
           .select()
 
         if (error) {
-          console.error('Error inserting:', error)
+          console.error('❌ Error inserting:', error)
+          console.error('Error details:', {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint
+          })
           throw error
         }
         
-        console.log('Insert successful:', data)
+        console.log('✅ Insert successful:', data)
+        console.log('✅ Returning success response')
         return { data: data[0], success: true }
       }
     } catch (error) {
-      console.error('Error adding to list:', error)
+      console.error('❌ Error adding to list:', error)
+      console.error('Error stack:', error.stack)
       return {
         data: null,
         success: false,
-        error: error.message
+        error: error.message || 'Error desconocido al agregar a la lista'
       }
     }
   }
@@ -127,6 +157,15 @@ class ListService {
       console.log('IMDB ID:', imdbId)
       console.log('List Type:', listType)
       
+      // Validate input parameters
+      if (!userId || !imdbId || !listType) {
+        console.error('Invalid parameters:', { userId, imdbId, listType })
+        return {
+          success: false,
+          error: 'Parámetros inválidos'
+        }
+      }
+
       const { data, error } = await supabase
         .from('user_movie_lists')
         .delete()
@@ -136,6 +175,12 @@ class ListService {
 
       if (error) {
         console.error('Error removing from list:', error)
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        })
         throw error
       }
 
@@ -148,7 +193,7 @@ class ListService {
       console.error('Error in removeFromList:', error)
       return {
         success: false,
-        error: error.message
+        error: error.message || 'Error desconocido al remover de la lista'
       }
     }
   }

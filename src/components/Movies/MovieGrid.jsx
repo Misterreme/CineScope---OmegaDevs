@@ -107,7 +107,8 @@ const MovieGrid = ({
   if (loading) {
     return (
       <div className="movie-grid-container">
-        <Breadcrumbs items={getBreadcrumbItems()} />
+        {/* Solo mostrar breadcrumbs si hay título específico */}
+        {(title && title !== '') && <Breadcrumbs items={getBreadcrumbItems()} />}
         <h2>{title}</h2>
         <div className="loading-grid">
           {Array.from({ length: 8 }).map((_, index) => (
@@ -127,7 +128,8 @@ const MovieGrid = ({
   if (!movies || movies.length === 0) {
     return (
       <div className="movie-grid-container">
-        <Breadcrumbs items={getBreadcrumbItems()} />
+        {/* Solo mostrar breadcrumbs si hay título específico */}
+        {(title && title !== '') && <Breadcrumbs items={getBreadcrumbItems()} />}
         <h2>{title}</h2>
         <div className="empty-state">
           <p>{emptyMessage || 'No se encontraron películas'}</p>
@@ -138,7 +140,8 @@ const MovieGrid = ({
 
   return (
     <div className="movie-grid-container">
-      <Breadcrumbs items={getBreadcrumbItems()} />
+      {/* Solo mostrar breadcrumbs si hay título específico o estamos en una lista */}
+      {(title && title !== '') && <Breadcrumbs items={getBreadcrumbItems()} />}
       <h2>{title}</h2>
       
       {/* Filtros avanzados */}

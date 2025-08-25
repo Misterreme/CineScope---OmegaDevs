@@ -1,0 +1,385 @@
+/* 🎛️ PÁGINA DE CONFIGURACIÓN */
+.settings-page {
+  min-height: 100vh;
+  background: var(--color-dark-primary);
+  color: var(--color-white);
+  padding: 0;
+}
+
+/* 📱 HEADER DE CONFIGURACIÓN */
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--color-dark-secondary);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-medium) var(--easing-smooth);
+  font-size: 0.9rem;
+}
+
+.back-button:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-2px);
+}
+
+.settings-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+/* 📝 CONTENIDO PRINCIPAL */
+.settings-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+/* 📋 SECCIONES DE CONFIGURACIÓN */
+.settings-section {
+  background: var(--color-dark-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.settings-section h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0 0 var(--spacing-lg) 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-white);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.settings-section h2 svg {
+  color: var(--color-primary);
+}
+
+/* 📝 FORMULARIOS */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--color-gray-light);
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  padding: var(--spacing-md);
+  background: var(--color-dark-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-white);
+  font-size: 1rem;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(252, 163, 17, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--color-gray-subtle);
+}
+
+/* 🔐 CAMPOS DE CONTRASEÑA */
+.password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input input {
+  flex: 1;
+  padding-right: 3rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: var(--spacing-sm);
+  background: none;
+  border: none;
+  color: var(--color-gray-light);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.password-toggle:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 🎭 SECCIÓN DE AVATAR DEL PERFIL */
+.current-avatar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.current-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: var(--color-dark-primary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.avatar-info {
+  margin: 0;
+  color: var(--color-gray-light);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.avatar-info strong {
+  color: var(--color-white);
+}
+
+/* 💾 BOTONES DE GUARDAR */
+.save-button {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all var(--transition-medium) var(--easing-smooth);
+  align-self: flex-start;
+}
+
+.save-button:hover:not(:disabled) {
+  background: var(--gradient-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ⚠️ BOTONES DE PELIGRO */
+.danger-button {
+  background: #EF4444;
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.danger-button:hover {
+  background: #DC2626;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 📢 MENSAJES */
+.message {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  margin: var(--spacing-lg) var(--spacing-xl);
+  font-weight: 500;
+  animation: slideInDown 0.3s var(--easing-smooth);
+}
+
+.message.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22C55E;
+}
+
+.message.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #EF4444;
+}
+
+.message svg {
+  flex-shrink: 0;
+}
+
+/* 🎭 ACCIONES DE CUENTA */
+.account-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* 🔄 ANIMACIONES */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .settings-header {
+    padding: var(--spacing-md);
+  }
+  
+  .settings-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .settings-content {
+    padding: var(--spacing-md);
+  }
+  
+  .settings-section {
+    padding: var(--spacing-lg);
+  }
+  
+  .current-image img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .image-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .upload-button,
+  .cancel-button {
+    width: 100%;
+  }
+  
+  .save-button {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+  
+  .settings-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .settings-section {
+    padding: var(--spacing-md);
+  }
+  
+  .form-group input {
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  
+  .current-image img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* 🌙 TEMA OSCURO - Ajustes adicionales */
+[data-theme="dark"] .settings-section {
+  background: var(--color-dark-secondary);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .form-group input {
+  background: var(--color-dark-primary);
+  border-color: var(--color-border);
+  color: var(--color-white);
+}
+
+/* 🌟 EFECTOS ESPECIALES */
+.settings-section {
+  transition: all var(--transition-medium) var(--easing-smooth);
+}
+
+.settings-section:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.form-group input:focus {
+  transform: scale(1.02);
+}
+
+/* 🔍 ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+  .settings-section,
+  .form-group input,
+  .save-button,
+  .change-image-btn {
+    transition: none;
+    transform: none;
+  }
+  
+  .message {
+    animation: none;
+  }
+}

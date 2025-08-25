@@ -80,12 +80,26 @@ export const AuthProvider = ({ children }) => {
     return { error }
   }
 
+  const refreshUser = async () => {
+    try {
+      const { data: { user: refreshedUser }, error } = await supabase.auth.getUser()
+      if (!error && refreshedUser) {
+        setUser(refreshedUser)
+      }
+      return { user: refreshedUser, error }
+    } catch (error) {
+      console.error('Error refreshing user:', error)
+      return { user: null, error }
+    }
+  }
+
   const value = {
     user,
     loading,
     signUp,
     signIn,
-    signOut
+    signOut,
+    refreshUser
   }
 
   return (

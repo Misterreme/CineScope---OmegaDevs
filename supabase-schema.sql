@@ -9,12 +9,12 @@ CREATE TABLE IF NOT EXISTS user_movie_lists (
     title VARCHAR(500) NOT NULL,
     year VARCHAR(10),
     poster TEXT,
-    list_type VARCHAR(20) NOT NULL CHECK (list_type IN ('watchlist', 'watched', 'saved', 'favorites')),
+    list_type VARCHAR(20) NOT NULL CHECK (list_type IN ('watchlist', 'watched', 'favorites')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     
-    -- Ensure a user can't have the same movie in multiple lists
-    UNIQUE(user_id, imdb_id)
+    -- Allow a user to have the same movie in different lists
+    UNIQUE(user_id, imdb_id, list_type)
 );
 
 -- Create indexes for better performance

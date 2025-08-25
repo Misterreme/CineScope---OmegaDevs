@@ -53,6 +53,31 @@
   border-color: var(--color-primary);
 }
 
+/* Responsive adjustments for theme toggle */
+@media (max-width: 768px) {
+  .theme-toggle {
+    padding: 8px;
+    min-width: 44px;
+    justify-content: center;
+  }
+  
+  .theme-text {
+    display: none;
+  }
+  
+  .theme-toggle:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle {
+    padding: 6px;
+    min-width: 40px;
+    margin: 0 4px;
+  }
+}
+
 /* Header Theme Styles */
 .app-header {
   background-color: var(--color-card);

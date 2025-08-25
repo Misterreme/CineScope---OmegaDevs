@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { useTheme } from '../../hooks/useTheme'
 import { movieService } from '../../services/movieService'
-import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye, Sun, Moon } from 'lucide-react'
+import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye, Sun, Moon } from 'lucide-react'
 import './Header.css'
 
 const Header = ({ activeTab, onTabChange }) => {
@@ -174,14 +174,7 @@ const Header = ({ activeTab, onTabChange }) => {
                 <span>Vistos</span>
               </button>
 
-              <button
-                className={`nav-button ${activeTab === 'favorites' ? 'active' : ''}`}
-                onClick={() => handleTabChange('favorites')}
-                title="Ver favoritos"
-              >
-                <Heart size={16} />
-                <span>Favoritos</span>
-              </button>
+
             </nav>
 
             {/* Botón de búsqueda */}
@@ -210,18 +203,20 @@ const Header = ({ activeTab, onTabChange }) => {
               </span>
             </button>
 
-            {/* Botón de favoritos - Solo visible en desktop */}
-            <button
-              className={`favorites-button desktop-favorites ${activeTab === 'favorites' ? 'active' : ''}`}
-              onClick={() => handleTabChange('favorites')}
-            >
-              <Heart size={20} />
-            </button>
+
 
             {/* Menú de usuario - Solo visible en desktop */}
             <div className="user-menu desktop-user-menu">
               <div className="user-avatar">
-                <User size={24} />
+                {user?.user_metadata?.avatar_url ? (
+                  <img 
+                    src={user.user_metadata.avatar_url} 
+                    alt="Foto de perfil"
+                    className="user-avatar-image"
+                  />
+                ) : (
+                  <User size={24} />
+                )}
                 <ChevronDown size={16} className="chevron" />
               </div>
 
@@ -229,11 +224,11 @@ const Header = ({ activeTab, onTabChange }) => {
                 <div className="dropdown-header">
                   <span className="user-name">{user?.user_metadata?.full_name || user?.email}</span>
                 </div>
-                <div className="dropdown-item">
+                <div className="dropdown-item" onClick={() => navigate('/settings')}>
                   <Settings size={16} />
                   <span>Ajustes</span>
                 </div>
-                <div className="dropdown-item">
+                <div className="dropdown-item" onClick={() => navigate('/account')}>
                   <User size={16} />
                   <span>Cuenta</span>
                 </div>
@@ -272,17 +267,6 @@ const Header = ({ activeTab, onTabChange }) => {
             {/* Navegación móvil */}
             <div className="mobile-nav">
               <button
-                className={`mobile-nav-button ${activeTab === 'home' ? 'active' : ''}`}
-                onClick={() => {
-                  handleTabChange('home');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Home size={20} />
-                <span>Inicio</span>
-              </button>
-              
-              <button
                 className={`mobile-nav-button ${activeTab === 'saved' ? 'active' : ''}`}
                 onClick={() => {
                   handleTabChange('saved');
@@ -293,16 +277,7 @@ const Header = ({ activeTab, onTabChange }) => {
                 <span>Mi Lista</span>
               </button>
               
-              <button
-                className={`mobile-nav-button ${activeTab === 'favorites' ? 'active' : ''}`}
-                onClick={() => {
-                  handleTabChange('favorites');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Heart size={20} />
-                <span>Favoritos</span>
-              </button>
+
               
               <button
                 className={`mobile-nav-button ${activeTab === 'watched' ? 'active' : ''}`}
@@ -325,7 +300,15 @@ const Header = ({ activeTab, onTabChange }) => {
             <h3 className="mobile-section-title">Usuario</h3>
             <div className="mobile-user-info">
               <div className="mobile-user-avatar">
-                <User size={24} />
+                {user?.user_metadata?.avatar_url ? (
+                  <img 
+                    src={user.user_metadata.avatar_url} 
+                    alt="Foto de perfil"
+                    className="mobile-user-avatar-image"
+                  />
+                ) : (
+                  <User size={24} />
+                )}
               </div>
               <span className="mobile-user-name">{user?.user_metadata?.full_name || user?.email}</span>
             </div>
@@ -337,11 +320,19 @@ const Header = ({ activeTab, onTabChange }) => {
                 <HelpCircle size={20} />
                 <span>Ayuda</span>
               </button>
-              <button className="mobile-settings-btn" onClick={(e) => e.stopPropagation()}>
+              <button className="mobile-settings-btn" onClick={(e) => {
+                e.stopPropagation();
+                navigate('/settings');
+                setIsMobileMenuOpen(false);
+              }}>
                 <Settings size={20} />
                 <span>Ajustes</span>
               </button>
-              <button className="mobile-account-btn" onClick={(e) => e.stopPropagation()}>
+              <button className="mobile-account-btn" onClick={(e) => {
+                e.stopPropagation();
+                navigate('/account');
+                setIsMobileMenuOpen(false);
+              }}>
                 <User size={20} />
                 <span>Cuenta</span>
               </button>

@@ -7,6 +7,7 @@ import Footer from '../components/Layout/Footer'
 
 import MovieGrid from '../components/Movies/MovieGrid'
 import HeroSection from '../components/Hero/HeroSection'
+
 import {
   ActionIcon,
   ComedyIcon,
@@ -28,7 +29,7 @@ const Dashboard = () => {
   const [newReleases, setNewReleases] = useState([])
   const [recommendedMovies, setRecommendedMovies] = useState([])
   const [savedMovies, setSavedMovies] = useState([])
-  const [userLists, setUserLists] = useState({ watchlist: [], watched: [], saved: [], favorites: [] })
+  const [userLists, setUserLists] = useState({ watchlist: [], watched: [] })
   const [loading, setLoading] = useState(false)
   const [categoryMovies, setCategoryMovies] = useState([])
   const [currentCategory, setCurrentCategory] = useState(null)
@@ -122,7 +123,7 @@ const Dashboard = () => {
     console.log('=== LOADING INITIAL DATA ===')
     console.log('User ID:', user.id)
     console.log('Lists result:', listsResult)
-    console.log('Favorites count:', listsResult.favorites?.length || 0)
+    
     console.log('Watchlist count:', listsResult.watchlist?.length || 0)
     console.log('Watched count:', listsResult.watched?.length || 0)
     
@@ -130,14 +131,11 @@ const Dashboard = () => {
       setUserLists(listsResult)
       console.log('User lists set successfully:', listsResult)
       console.log('State after setUserLists:', {
-        favorites: listsResult.favorites,
+
         watchlist: listsResult.watchlist,
         watched: listsResult.watched
       })
-      console.log('Favorites details:', {
-        count: listsResult.favorites?.length || 0,
-        items: listsResult.favorites?.map(f => ({ id: f.imdb_id, title: f.title })) || []
-      })
+
     } else {
       console.error('Failed to load user lists:', listsResult.error)
     }
@@ -174,7 +172,7 @@ const Dashboard = () => {
       
       if (listsResult.success) {
         console.log('Setting new user lists:', listsResult)
-        console.log('Favorites in new result:', listsResult.favorites)
+
         console.log('Watchlist in new result:', listsResult.watchlist)
         console.log('Watched in new result:', listsResult.watched)
         
@@ -183,7 +181,7 @@ const Dashboard = () => {
         // Verificar que el estado se actualizó
         setTimeout(() => {
           console.log('State after setUserLists (delayed):', userLists)
-          console.log('Favorites count after update:', userLists.favorites?.length || 0)
+  
         }, 100)
       } else {
         console.error('Failed to get user lists:', listsResult.error)
@@ -289,33 +287,9 @@ const Dashboard = () => {
           )}
         </section>
 
-        {/* Mis Favoritos */}
-        <section className="content-section-favorites">
-          <h2 className="section-title">Mis Favoritos</h2>
-          {userLists.favorites && userLists.favorites.length > 0 ? (
-            <MovieGrid
-              onTabChange={setActiveTab}
-              movies={userLists.favorites.map(item => ({
-                imdbID: item.imdb_id,
-                Title: item.title,
-                Year: item.year,
-                Poster: item.poster
-              }))}
-              loading={loading}
-              title=""
-              onAddToList={handleAddToList}
-              userLists={userLists}
-              emptyMessage=""
-              showFilters={false}
-              showPagination={false}
-              itemsPerPage={4}
-            />
-          ) : (
-            <div className="empty-favorites">
-              <p>No tienes películas favoritas. ¡Agrega algunas!</p>
-            </div>
-          )}
-        </section>
+
+
+
 
         {/* Explorar por Categoría */}
         <section className="content-section-categories">
@@ -431,38 +405,7 @@ const Dashboard = () => {
           />
         )
 
-      case 'favorites': {
-        const favoritesMovies = userLists.favorites.map(item => ({
-          imdbID: item.imdb_id,
-          Title: item.title,
-          Year: item.year,
-          Poster: item.poster
-        }))
-        
-        return (
-          <div className="content-section">
-            <h2 className="section-title page-title">Mis Favoritos</h2>
-            {favoritesMovies.length > 0 ? (
-              <MovieGrid
-                onTabChange={setActiveTab}
-                movies={favoritesMovies}
-                loading={loading}
-                title=""
-                onAddToList={handleAddToList}
-                userLists={userLists}
-                emptyMessage=""
-                showFilters={true}
-                showPagination={true}
-                itemsPerPage={12}
-              />
-            ) : (
-              <div className="empty-state">
-                <p>No tienes películas favoritas. ¡Agrega algunas!</p>
-              </div>
-            )}
-          </div>
-        )
-      }
+
       
       // Casos para categorías
       case 'action':

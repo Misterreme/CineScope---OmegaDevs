@@ -217,19 +217,43 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
+  padding: 0;
+  border-radius: 0;
   cursor: pointer;
   transition: all var(--transition-medium) var(--easing-smooth);
   color: var(--color-gray-light);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--glass-border);
+  background: transparent;
+  border: none;
+  position: relative;
+  overflow: visible;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: none;
 }
 
 .user-avatar:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-white);
   transform: translateY(-1px);
+}
+
+/* Estilos para la imagen de avatar del usuario */
+.user-avatar-image {
+  width: 55px !important;
+  height: 55px !important;
+  max-width: 55px !important;
+  max-height: 55px !important;
+  min-width: 55px !important;
+  min-height: 55px !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
+  transition: none;
+  flex-shrink: 0;
+}
+
+.user-avatar:hover .user-avatar-image {
+  /* Sin animación de hover */
 }
 
 .chevron {
@@ -584,21 +608,21 @@
 
 /* Estilo para botón de visto */
 .action-btn.watched {
-  background: #00796b;
-  border-color: #00796b;
+  background: #156064;
+  border-color: #156064;
   color: white;
 }
 
 .action-btn.watched.added {
-  background: #009688;
-  border-color: #009688;
+  background: #1a7a7a;
+  border-color: #1a7a7a;
   animation: buttonPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 15px rgba(0, 150, 136, 0.5);
+  box-shadow: 0 0 15px rgba(21, 96, 100, 0.5);
 }
 
 .action-btn.watched:hover {
-  background: #00897b;
-  border-color: #00897b;
+  background: #1a7a7a;
+  border-color: #1a7a7a;
 }
 
 /* Efecto de pulso para botones activos */
@@ -1292,6 +1316,17 @@
   align-items: center;
   justify-content: center;
   color: var(--color-dark-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Estilos para la imagen de avatar móvil */
+.mobile-user-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: all var(--transition-medium) var(--easing-smooth);
 }
 
 .mobile-user-name {
@@ -1612,4 +1647,40 @@
 .empty-favorites p {
   font-size: var(--font-size-lg);
   margin: 0;
+}
+
+/* Forzar tamaño exacto del avatar del header */
+.app-header .header-actions .user-avatar .user-avatar-image,
+.app-header .header-actions .user-avatar img {
+  width: 42px !important;
+  height: 42px !important;
+  max-width: 42px !important;
+  max-height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Forzar tamaño del contenedor del avatar */
+.app-header .header-actions .user-avatar {
+  width: fit-content !important;
+  height: fit-content !important;
+  max-width: 75px !important;
+  max-height: 60px !important;
+  padding: 0 !important;
+  gap: var(--spacing-xs) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Asegurar que la flecha sea visible */
+.app-header .header-actions .user-avatar svg {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  margin-left: var(--spacing-xs) !important;
 }

@@ -1,37 +1,36 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useNotification } from '../../contexts/NotificationContext'
 import { listService } from '../../services/listService'
-import { Eye, Star, Bookmark, Heart } from 'lucide-react'
+import { Eye, Star, Bookmark } from 'lucide-react'
 
-const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [], saved: [], favorites: [] } }) => {
+const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [], watchlist: [] } }) => {
+  const navigate = useNavigate()
   const { user } = useAuth()
+  const { showMovieActionSuccess } = useNotification()
   const [loading, setLoading] = useState(false)
 
   console.log('=== MOVIE CARD RENDER ===')
   console.log('Movie:', movie.Title)
   console.log('UserLists received:', userLists)
-  console.log('Favorites in userLists:', userLists.favorites)
-  console.log('Saved in userLists:', userLists.saved)
+  console.log('Watchlist in userLists:', userLists.watchlist)
   console.log('Watched in userLists:', userLists.watched)
 
   const isWatched = userLists.watched?.some(item => item.imdb_id === movie.imdbID || item.imdbID === movie.imdbID)
   const isSaved = userLists.watchlist?.some(item => item.imdb_id === movie.imdbID || item.imdbID === movie.imdbID)
-  const isFavorite = userLists.favorites?.some(item => item.imdb_id === movie.imdbID || item.imdbID === movie.imdbID)
 
   console.log('Movie states:', {
     movieId: movie.imdbID,
     isWatched,
     isSaved,
-    isFavorite,
     watchlist: userLists.watchlist,
-    watched: userLists.watched,
-    favorites: userLists.favorites
+    watched: userLists.watched
   })
 
   console.log('Movie states:', {
     isWatched,
     isSaved,
-    isFavorite,
     movieId: movie.imdbID
   })
 
@@ -47,19 +46,21 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
         console.log('Removing from watched list')
         const result = await listService.removeFromList(user.id, movie.imdbID, 'watched')
         console.log('Remove result:', result)
-        if (result.success && onAddToList) {
-          onAddToList()
+        if (result.success) {
+          showMovieActionSuccess('watched', movie.Title, false)
+          if (onAddToList) {
+            onAddToList()
+          }
         }
       } else {
         // Add to watched list
         console.log('Adding to watched list')
         const result = await listService.addToList(user.id, movie, 'watched')
         console.log('Add result:', result)
-        if (result.success && onAddToList) {
-          onAddToList()
-          // Navegar a la sección de vistas si no está ya en ella
-          if (onTabChange) {
-            onTabChange('watched')
+        if (result.success) {
+          showMovieActionSuccess('watched', movie.Title, true)
+          if (onAddToList) {
+            onAddToList()
           }
         }
       }
@@ -87,21 +88,23 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
         console.log('Removing from watchlist')
         const result = await listService.removeFromList(user.id, movie.imdbID, 'watchlist')
         console.log('Remove result:', result)
-        if (result.success && onAddToList) {
-          console.log('Calling onAddToList after remove')
-          onAddToList()
+        if (result.success) {
+          showMovieActionSuccess('watchlist', movie.Title, false)
+          if (onAddToList) {
+            console.log('Calling onAddToList after remove')
+            onAddToList()
+          }
         }
       } else {
         // Add to watchlist
         console.log('Adding to watchlist')
         const result = await listService.addToList(user.id, movie, 'watchlist')
         console.log('Add result:', result)
-        if (result.success && onAddToList) {
-          console.log('Calling onAddToList after add')
-          onAddToList()
-          // Navegar a la sección de guardados si no está ya en ella
-          if (onTabChange) {
-            onTabChange('saved')
+        if (result.success) {
+          showMovieActionSuccess('watchlist', movie.Title, true)
+          if (onAddToList) {
+            console.log('Calling onAddToList after add')
+            onAddToList()
           }
         }
       }
@@ -112,58 +115,35 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
     }
   }
 
-  const handleAddToFavorites = async () => {
-    if (!user || loading) return
-    
-    console.log('=== DEBUG FAVORITES ===')
-    console.log('User:', user)
-    console.log('Movie:', movie.Title)
-    console.log('Current state:', isFavorite)
-    console.log('User ID:', user.id)
-    console.log('Movie ID:', movie.imdbID)
-    console.log('UserLists received:', userLists)
-    console.log('Favorites in userLists:', userLists.favorites)
-    
-    setLoading(true)
-    
-    try {
-      if (isFavorite) {
-        // Remove from favorites list
-        console.log('Removing from favorites list')
-        const result = await listService.removeFromList(user.id, movie.imdbID, 'favorites')
-        console.log('Remove result:', result)
-        if (result.success && onAddToList) {
-          console.log('Calling onAddToList after remove')
-          onAddToList()
-        }
-      } else {
-        // Add to favorites list
-        console.log('Adding to favorites list')
-        const result = await listService.addToList(user.id, movie, 'favorites')
-        console.log('Add result:', result)
-        if (result.success && onAddToList) {
-          console.log('Calling onAddToList after add')
-          onAddToList()
-          // Navegar a la sección de favoritos si no está ya en ella
-          if (onTabChange) {
-            onTabChange('favorites')
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error in handleAddToFavorites:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+
 
 
   const posterUrl = movie.Poster && movie.Poster !== 'N/A' 
     ? movie.Poster 
     : '/placeholder-movie.jpg'
 
+  const handleCardClick = () => {
+    console.log('🎬 MovieCard clicked:', {
+      title: movie.Title,
+      imdbID: movie.imdbID,
+      type: typeof movie.imdbID,
+      year: movie.Year
+    })
+    
+    if (!movie.imdbID) {
+      console.error('❌ No IMDb ID found for movie:', movie)
+      return
+    }
+    
+    navigate(`/movie/${movie.imdbID}`)
+  }
+
   return (
-    <div className="movie-card" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)' }}>
+    <div 
+      className="movie-card" 
+      style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)' }}
+      onClick={handleCardClick}
+    >
       <div className="movie-poster">
         <img 
           src={posterUrl} 
@@ -206,21 +186,7 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
               )}
             </button>
 
-            <button
-              className={`action-btn favorite ${isFavorite ? 'added' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToFavorites();
-              }}
-              disabled={loading}
-              title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-            >
-              {loading ? (
-                <div className="loading-spinner" />
-              ) : (
-                <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
-              )}
-            </button>
+
           </div>
         </div>
       </div>
