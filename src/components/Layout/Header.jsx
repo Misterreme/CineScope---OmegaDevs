@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { useTheme } from '../../hooks/useTheme'
 import { movieService } from '../../services/movieService'
-import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye, Sun, Moon } from 'lucide-react'
+import { favoritesService } from '../../services/favoritesService'
+import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye, Sun, Moon, Heart } from 'lucide-react'
+
 import './Header.css'
 
-const Header = ({ activeTab, onTabChange }) => {
+const Header = ({ activeTab, onTabChange, onMovieClick }) => {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const [isScrolled, setIsScrolled] = useState(false)
@@ -17,6 +19,7 @@ const Header = ({ activeTab, onTabChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchLoading, setIsSearchLoading] = useState(false)
   const [searchTimeout, setSearchTimeout] = useState(null)
+
   const { toggleTheme, isDark } = useTheme();
   
   const handleThemeToggle = () => {
@@ -33,6 +36,8 @@ const Header = ({ activeTab, onTabChange }) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+
+
   const handleSignOut = async () => {
     await signOut()
   }
@@ -40,6 +45,10 @@ const Header = ({ activeTab, onTabChange }) => {
   const handleSearchClick = () => {
     setIsSearchActive(!isSearchActive)
     setIsSearchModalOpen(true)
+  }
+
+  const handleFavoritesClick = () => {
+    onTabChange('favorites')
   }
 
   const handleLogoClick = () => {
@@ -122,8 +131,10 @@ const Header = ({ activeTab, onTabChange }) => {
 
   const handleMovieClick = (movie) => {
     console.log('Película seleccionada:', movie)
-    // Navegar a la página de detalles de la película
-    navigate(`/movie/${movie.imdbID}`)
+    // Usar el modal del Dashboard en lugar de navegar
+    if (onMovieClick) {
+      onMovieClick(movie.imdbID)
+    }
     closeSearchModal()
   }
 
@@ -186,8 +197,17 @@ const Header = ({ activeTab, onTabChange }) => {
               />
             </button>
 
-            {/* Theme Toggle Button */}
-            <button
+            {/* Botón de favoritos */}
+            <button 
+              className="favorites-button" 
+              onClick={handleFavoritesClick}
+              title="Ver mis favoritos"
+            >
+              <Heart size={20} />
+            </button>
+
+            {/* Theme Toggle Button - OCULTO TEMPORALMENTE */}
+            {/* <button
               className="theme-toggle"
               onClick={handleThemeToggle}
               title={isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
@@ -199,9 +219,9 @@ const Header = ({ activeTab, onTabChange }) => {
                 <Moon size={20} className="theme-icon" data-testid="moon-icon" />
               )}
               <span className="theme-text">
-                {isDark ? 'Tema claro' : 'Tema oscuro'}
+                {isDark ? 'Tema claro' : 'Cambiar a tema oscuro'}
               </span>
-            </button>
+            </button> */}
 
 
 
@@ -266,29 +286,27 @@ const Header = ({ activeTab, onTabChange }) => {
             <h3 className="mobile-section-title">Navegación</h3>
             {/* Navegación móvil */}
             <div className="mobile-nav">
-              <button
-                className={`mobile-nav-button ${activeTab === 'saved' ? 'active' : ''}`}
-                onClick={() => {
-                  handleTabChange('saved');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Bookmark size={20} />
-                <span>Mi Lista</span>
-              </button>
-              
-
-              
-              <button
-                className={`mobile-nav-button ${activeTab === 'watched' ? 'active' : ''}`}
-                onClick={() => {
-                  handleTabChange('watched');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Eye size={20} />
-                <span>Visto</span>
-              </button>
+                             <button
+                 className={`mobile-nav-button ${activeTab === 'saved' ? 'active' : ''}`}
+                 onClick={() => {
+                   handleTabChange('saved');
+                   setIsMobileMenuOpen(false);
+                 }}
+               >
+                 <Bookmark size={20} />
+                 <span>Mi Lista</span>
+               </button>
+               
+               <button
+                 className={`mobile-nav-button ${activeTab === 'watched' ? 'active' : ''}`}
+                 onClick={() => {
+                   handleTabChange('watched');
+                   setIsMobileMenuOpen(false);
+                 }}
+               >
+                 <Eye size={20} />
+                 <span>Visto</span>
+               </button>
             </div>
           </div>
 
@@ -412,6 +430,8 @@ const Header = ({ activeTab, onTabChange }) => {
           </div>
         </div>
       )}
+
+
     </>
   )
 }

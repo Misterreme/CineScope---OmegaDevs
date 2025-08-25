@@ -221,6 +221,24 @@ class ListService {
       }
     }
   }
+
+  // Métodos específicos para watchlist
+  async addToWatchlist(userId, movie) {
+    return this.addToList(userId, movie, 'watchlist')
+  }
+
+  async removeFromWatchlist(userId, imdbId) {
+    return this.removeFromList(userId, imdbId, 'watchlist')
+  }
+
+  // Métodos específicos para watched
+  async addToWatched(userId, movie) {
+    return this.addToList(userId, movie, 'watched')
+  }
+
+  async removeFromWatched(userId, imdbId) {
+    return this.removeFromList(userId, imdbId, 'watched')
+  }
 }
 
 export const listService = new ListService()

@@ -1,0 +1,234 @@
+/* 🎭 ESTILOS DEL BOTÓN DE FAVORITOS */
+
+.favorite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tamaños del botón */
+.favorite-button--small {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+}
+
+.favorite-button--medium {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+}
+
+.favorite-button--large {
+  width: 48px;
+  height: 48px;
+  padding: 10px;
+}
+
+/* Estados del botón */
+.favorite-button:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.favorite-button:active {
+  transform: scale(0.95);
+}
+
+.favorite-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(252, 163, 17, 0.3);
+}
+
+/* Estado activo (en favoritos) */
+.favorite-button--active {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.favorite-button--active:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
+  transform: scale(1.05);
+}
+
+/* Estado de carga */
+.favorite-button--loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.favorite-button--loading .favorite-icon {
+  opacity: 0;
+}
+
+/* Icono del corazón */
+.favorite-icon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke-width: 2;
+}
+
+.favorite-button:hover .favorite-icon {
+  transform: scale(1.1);
+}
+
+.favorite-button--active .favorite-icon {
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+/* Texto del botón (cuando showText es true) */
+.favorite-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.favorite-button:hover .favorite-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Spinner de carga */
+.favorite-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.favorite-loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animaciones */
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Efectos especiales */
+.favorite-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.favorite-button:hover::before {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .favorite-button--medium {
+    width: 36px;
+    height: 36px;
+    padding: 7px;
+  }
+  
+  .favorite-button--large {
+    width: 44px;
+    height: 44px;
+    padding: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorite-button--medium {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+  }
+  
+  .favorite-button--large {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+}
+
+/* Tema oscuro */
+[data-theme="dark"] .favorite-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .favorite-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .favorite-button,
+  .favorite-icon,
+  .favorite-text {
+    transition: none;
+    animation: none;
+  }
+  
+  .favorite-button:hover {
+    transform: none;
+  }
+  
+  .favorite-button--active .favorite-icon {
+    animation: none;
+  }
+}
+
+/* Estados de foco para navegación por teclado */
+.favorite-button:focus-visible {
+  outline: 2px solid var(--color-primary, #FCA311);
+  outline-offset: 2px;
+}

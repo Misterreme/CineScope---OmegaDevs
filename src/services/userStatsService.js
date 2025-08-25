@@ -1,6 +1,7 @@
 import { supabase } from '../config/supabase'
 import { listService } from './listService'
 import { ratingService } from './ratingService'
+import { favoritesService } from './favoritesService'
 
 class UserStatsService {
   // Obtener estadísticas completas del usuario
@@ -18,6 +19,7 @@ class UserStatsService {
         totalMovies: stats.totalMovies,
         saved: stats.saved,
         watched: stats.watched,
+        favorites: stats.favorites,
         averageRating: 0 // Se actualizará después
       })
       
@@ -73,10 +75,12 @@ class UserStatsService {
       // Calcular estadísticas reales
       const saved = userLists.watchlist?.length || 0  // watchlist = saved
       const watched = userLists.watched?.length || 0
+      const favorites = favoritesService.getFavoritesCount()
       
       console.log('📊 Calculated stats:', {
         saved,
-        watched
+        watched,
+        favorites
       })
       
       // Total de películas en todas las listas
@@ -92,6 +96,7 @@ class UserStatsService {
         totalMovies,
         saved,
         watched,
+        favorites,
         ratings: ratings.length
       })
 
@@ -99,6 +104,7 @@ class UserStatsService {
         totalMovies,
         saved,
         watched,
+        favorites,
         ratings
       }
     } catch (error) {
@@ -482,6 +488,19 @@ class UserStatsService {
           description: `Añadiste "${movie.title}" a tu lista para ver`,
           time: this.formatTimeAgo(movie.created_at || movie.updated_at),
           timestamp: new Date(movie.created_at || movie.updated_at).getTime()
+        })
+      }
+    })
+    
+    // Agregar películas añadidas a favoritos (más recientes primero)
+    const favorites = favoritesService.getFavoritesSortedByDate()
+    favorites.forEach((movie, index) => {
+      if (index < 3) { // Solo las 3 más recientes
+        activities.push({
+          type: 'favorite',
+          description: `Agregaste "${movie.Title}" a favoritos`,
+          time: this.formatTimeAgo(movie.addedAt),
+          timestamp: new Date(movie.addedAt).getTime()
         })
       }
     })

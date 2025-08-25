@@ -14,7 +14,8 @@ const MovieGrid = ({
   emptyMessage,
   showFilters = true,
   showPagination = true,
-  itemsPerPage = 12
+  itemsPerPage = 12,
+  onMovieClick
 }) => {
   const [filteredMovies, setFilteredMovies] = useState(movies || [])
   const [currentPage, setCurrentPage] = useState(1)
@@ -164,6 +165,7 @@ const MovieGrid = ({
             onAddToList={onAddToList}
             onTabChange={onTabChange}
             userLists={userLists}
+            onMovieClick={onMovieClick}
           />
         ))}
       </div>

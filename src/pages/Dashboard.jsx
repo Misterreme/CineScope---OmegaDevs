@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { movieService } from '../services/movieService'
 import { listService } from '../services/listService'
+import { favoritesService } from '../services/favoritesService'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 
 import MovieGrid from '../components/Movies/MovieGrid'
 import HeroSection from '../components/Hero/HeroSection'
+import MovieDetailsModal from '../components/UI/MovieDetailsModal'
 
 import {
   ActionIcon,
@@ -33,6 +35,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false)
   const [categoryMovies, setCategoryMovies] = useState([])
   const [currentCategory, setCurrentCategory] = useState(null)
+  const [isMovieModalOpen, setIsMovieModalOpen] = useState(false)
+  const [selectedMovieId, setSelectedMovieId] = useState(null)
 
 
   // Categorías para explorar
@@ -189,6 +193,16 @@ const Dashboard = () => {
     }
   }
 
+  const handleMovieClick = (movieId) => {
+    setSelectedMovieId(movieId)
+    setIsMovieModalOpen(true)
+  }
+
+  const handleCloseMovieModal = () => {
+    setIsMovieModalOpen(false)
+    setSelectedMovieId(null)
+  }
+
   const handleCategoryClick = async (categoryId) => {
     console.log('=== CATEGORY CLICK ===')
     console.log('Category ID:', categoryId)
@@ -240,6 +254,7 @@ const Dashboard = () => {
             showFilters={false}
             showPagination={false}
             itemsPerPage={8}
+            onMovieClick={handleMovieClick}
           />
         </section>
 
@@ -256,6 +271,7 @@ const Dashboard = () => {
             showFilters={false}
             showPagination={false}
             itemsPerPage={6}
+            onMovieClick={handleMovieClick}
           />
         </section>
 
@@ -279,6 +295,7 @@ const Dashboard = () => {
               showFilters={false}
               showPagination={false}
               itemsPerPage={4}
+              onMovieClick={handleMovieClick}
             />
           ) : (
             <div className="empty-saved">
@@ -302,9 +319,6 @@ const Dashboard = () => {
                   <div className="category-overlay" style={{ background: category.overlay }}></div>
                 </div>
                                  <div className="category-content">
-                   <div className="category-icon">
-                     <category.icon size={64} color="#FCA311" />
-                   </div>
                    <h3>{category.name}</h3>
                    <button 
                      className="category-btn"
@@ -349,6 +363,7 @@ const Dashboard = () => {
                 showFilters={true}
                 showPagination={true}
                 itemsPerPage={12}
+                onMovieClick={handleMovieClick}
               />
             ) : (
               <div className="empty-state">
@@ -382,10 +397,40 @@ const Dashboard = () => {
                 showFilters={true}
                 showPagination={true}
                 itemsPerPage={12}
+                onMovieClick={handleMovieClick}
               />
             ) : (
               <div className="empty-state">
                 <p>No has marcado ninguna película como vista. ¡Empieza a llevar tu registro!</p>
+              </div>
+            )}
+          </div>
+        )
+      }
+
+      case 'favorites': {
+        const favorites = favoritesService.getFavorites();
+        
+        return (
+          <div className="content-section">
+            <h2 className="section-title page-title">Mis Favoritos</h2>
+            {favorites.length > 0 ? (
+              <MovieGrid
+                onTabChange={setActiveTab}
+                movies={favorites}
+                loading={loading}
+                title=""
+                onAddToList={handleAddToList}
+                userLists={userLists}
+                emptyMessage=""
+                showFilters={true}
+                showPagination={true}
+                itemsPerPage={12}
+                onMovieClick={handleMovieClick}
+              />
+            ) : (
+              <div className="empty-state">
+                <p>No tienes películas en favoritos. ¡Explora y agrega algunas!</p>
               </div>
             )}
           </div>
@@ -402,6 +447,7 @@ const Dashboard = () => {
             onAddToList={handleAddToList}
             userLists={userLists}
             emptyMessage="Cargando catálogo de películas..."
+            onMovieClick={handleMovieClick}
           />
         )
 
@@ -435,6 +481,7 @@ const Dashboard = () => {
                 showFilters={true}
                 showPagination={true}
                 itemsPerPage={12}
+                onMovieClick={handleMovieClick}
               />
             ) : (
               <div className="empty-state">
@@ -468,6 +515,7 @@ const Dashboard = () => {
                   showFilters={true}
                   showPagination={true}
                   itemsPerPage={12}
+                  onMovieClick={handleMovieClick}
                 />
               ) : (
                 <div className="empty-state">
@@ -490,13 +538,20 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      <Header activeTab={activeTab} onTabChange={setActiveTab} onMovieClick={handleMovieClick} />
       
       <main className="main-content">
         <div className="content-section">
           {renderContent()}
         </div>
       </main>
+
+      {/* Modal de detalles de película */}
+      <MovieDetailsModal
+        isOpen={isMovieModalOpen}
+        onClose={handleCloseMovieModal}
+        movieId={selectedMovieId}
+      />
 
       <Footer />
     </div>

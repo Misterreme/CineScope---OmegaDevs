@@ -1,15 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { useNotification } from '../../contexts/NotificationContext'
 import { listService } from '../../services/listService'
-import { Eye, Star, Bookmark } from 'lucide-react'
+import { favoritesService } from '../../services/favoritesService'
+import { Eye, Star, Bookmark, Heart } from 'lucide-react'
 
-const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [], watchlist: [] } }) => {
+const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [], watchlist: [] }, onMovieClick }) => {
   const navigate = useNavigate()
   const { user } = useAuth()
   const { showMovieActionSuccess } = useNotification()
   const [loading, setLoading] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  // Verificar si la película está en favoritos
+  useEffect(() => {
+    if (movie?.imdbID) {
+      setIsFavorite(favoritesService.isFavorite(movie.imdbID))
+    }
+  }, [movie?.imdbID])
 
   console.log('=== MOVIE CARD RENDER ===')
   console.log('Movie:', movie.Title)
@@ -115,8 +124,32 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
     }
   }
 
+  const handleToggleFavorite = async () => {
+    if (loading) return
+    
+    setLoading(true)
+    
+    try {
+      let result;
+      
+      if (isFavorite) {
+        // Remover de favoritos
+        result = favoritesService.removeFromFavorites(movie.imdbID);
+      } else {
+        // Agregar a favoritos
+        result = favoritesService.addToFavorites(movie);
+      }
 
-
+      if (result.success) {
+        setIsFavorite(!isFavorite);
+        showMovieActionSuccess('favoritos', movie.Title, !isFavorite);
+      }
+    } catch (error) {
+      console.error('Error al manejar favoritos:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const posterUrl = movie.Poster && movie.Poster !== 'N/A' 
     ? movie.Poster 
@@ -135,7 +168,13 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
       return
     }
     
-    navigate(`/movie/${movie.imdbID}`)
+    // Si hay una función onMovieClick, usarla (para el modal)
+    if (onMovieClick) {
+      onMovieClick(movie.imdbID)
+    } else {
+      // Fallback a la navegación tradicional
+      navigate(`/movie/${movie.imdbID}`)
+    }
   }
 
   return (
@@ -163,11 +202,7 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
               disabled={loading}
               title={isSaved ? 'Quitar de guardados' : 'Guardar película'}
             >
-              {loading ? (
-                <div className="loading-spinner" />
-              ) : (
-                <Bookmark size={16} fill={isSaved ? 'currentColor' : 'none'} />
-              )}
+              <Bookmark size={16} fill={isSaved ? 'currentColor' : 'none'} />
             </button>
 
             <button
@@ -179,13 +214,20 @@ const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [],
               disabled={loading}
               title={isWatched ? 'Quitar de vistas' : 'Marcar como vista'}
             >
-              {loading ? (
-                <div className="loading-spinner" />
-              ) : (
-                <Eye size={16} fill={isWatched ? 'currentColor' : 'none'} />
-              )}
+              <Eye size={16} fill={isWatched ? 'currentColor' : 'none'} />
             </button>
 
+            <button
+              className={`action-btn favorite ${isFavorite ? 'added' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleFavorite();
+              }}
+              disabled={loading}
+              title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+            >
+              <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+            </button>
 
           </div>
         </div>

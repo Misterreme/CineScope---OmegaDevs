@@ -13,7 +13,8 @@ import {
   Target,
   TrendingUp,
   Award,
-  Medal
+  Medal,
+  Heart
 } from 'lucide-react'
 import './Account.css'
 
@@ -27,7 +28,7 @@ const Account = () => {
     saved: 0,
     watched: 0,
     daysActive: 0,
-    averageRating: 0
+    favorites: 0
   })
   
   const [userStats, setUserStats] = useState(null)
@@ -61,7 +62,7 @@ const Account = () => {
           saved: userStatsData.saved || 0,
           watched: userStatsData.watched || 0,
           daysActive: userStatsData.daysActive || 0,
-          averageRating: userStatsData.averageRating || 0
+          favorites: userStatsData.favorites || 0
         }
         
         console.log('🎯 Setting stats to:', newStats)
@@ -213,21 +214,11 @@ const Account = () => {
             
             <div className="stat-card">
               <div className="stat-icon">
-                <Star size={24} />
+                <Heart size={24} />
               </div>
               <div className="stat-content">
-                <h3>{stats.averageRating}</h3>
-                <p>Calificación Promedio</p>
-              </div>
-            </div>
-            
-            <div className="stat-card">
-              <div className="stat-icon">
-                <Target size={24} />
-              </div>
-              <div className="stat-content">
-                <h3>{userStats?.favoriteGenre || 'N/A'}</h3>
-                <p>Género Favorito</p>
+                <h3>{stats.favorites}</h3>
+                <p>Favoritos</p>
               </div>
             </div>
           </div>
@@ -303,6 +294,7 @@ const Account = () => {
                     {activity.type === 'watched' && <Eye size={16} />}
                     {activity.type === 'review' && <Star size={16} />}
                     {activity.type === 'watchlist' && <Bookmark size={16} />}
+                    {activity.type === 'favorite' && <Heart size={16} />}
                     {activity.type === 'achievement' && <Award size={16} />}
                   </div>
                 </div>

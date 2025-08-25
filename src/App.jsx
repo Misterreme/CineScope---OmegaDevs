@@ -7,7 +7,7 @@ import WelcomePage from './components/Welcome/WelcomePage'
 import Dashboard from './pages/Dashboard'
 import Settings from './pages/Settings'
 import Account from './pages/Account'
-import MovieDetails from './pages/MovieDetails'
+
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import Help from './pages/Help'
@@ -58,7 +58,7 @@ function AppContent() {
       <Route path="/" element={<Dashboard />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/account" element={<Account />} />
-      <Route path="/movie/:imdbId" element={<MovieDetails />} />
+
     </Routes>
   )
 }
