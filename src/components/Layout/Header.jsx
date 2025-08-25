@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { movieService } from '../../services/movieService'
 import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye } from 'lucide-react'
+import './Header.css'
 
 const Header = ({ activeTab, onTabChange }) => {
   const { user, signOut } = useAuth()
@@ -112,12 +113,9 @@ const Header = ({ activeTab, onTabChange }) => {
 
   const handleMovieClick = (movie) => {
     console.log('Película seleccionada:', movie)
-    // Aquí puedes implementar la navegación a la página de la película
-    // Por ejemplo, cambiar a un tab específico o navegar a una ruta
+    // Navegar a la página de detalles de la película
+    navigate(`/movie/${movie.imdbID}`)
     closeSearchModal()
-    
-    // Opcional: Mostrar la película en el dashboard
-    // Puedes implementar una función para mostrar detalles de la película
   }
 
   return (
@@ -322,62 +320,66 @@ const Header = ({ activeTab, onTabChange }) => {
         </div>
       </header>
 
-      {/* Modal de búsqueda */}
+      {/* Modal de búsqueda con backdrop */}
       {isSearchModalOpen && (
         <div className="search-modal-overlay" onClick={closeSearchModal}>
           <div className="search-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="search-modal-header">
+            <div className="search-modal-content">
               <div className="search-input-container">
                 <Search size={20} className="search-icon" />
                 <input
                   type="text"
-                  className="search-modal-input"
-                  placeholder="Buscar películas, actores..."
+                  placeholder="Buscar películas..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearch();
-                    }
-                  }}
+                  onChange={handleSearchInputChange}
+                  autoFocus
+                  className="search-modal-input"
                 />
+                <button onClick={closeSearchModal} className="close-search">
+                  <X size={20} />
+                </button>
               </div>
-              <button className="close-search-btn" onClick={closeSearchModal}>
-                <X size={24} />
-              </button>
-            </div>
-            
-            <div className="search-results-container">
-              {searchQuery.trim() === '' ? (
-                <div className="search-placeholder">
-                  <Search size={48} />
-                  <h3>¿Qué quieres ver hoy?</h3>
-                  <p>Escribe para encontrar películas y más</p>
-                </div>
-              ) : searchResults.length > 0 ? (
-                <div className="search-results-grid">
-                  {searchResults.map((movie) => (
-                    <div 
-                      key={movie.id} 
-                      className="search-result-card"
-                      onClick={() => handleMovieClick(movie)}
-                    >
-                      <div className="search-result-poster">
-                        <img src={movie.poster} alt={movie.title} />
-                      </div>
-                      <div className="search-result-info">
-                        <h4>{movie.title}</h4>
-                        <p>{movie.year}</p>
-                      </div>
+
+              <div className="search-results-container">
+                {isSearchLoading ? (
+                  <div className="search-loading">
+                    <div className="loading-spinner"></div>
+                    <p>Buscando películas...</p>
+                  </div>
+                ) : searchResults.length > 0 ? (
+                  <div className="search-results">
+                    <h3>Resultados de búsqueda</h3>
+                    <div className="search-results-grid">
+                      {searchResults.map((movie) => (
+                        <div 
+                          key={movie.imdbID} 
+                          className="search-result-item"
+                          onClick={() => handleMovieClick(movie)}
+                        >
+                          <img 
+                            src={movie.Poster !== 'N/A' ? movie.Poster : '/placeholder-movie.jpg'} 
+                            alt={movie.Title}
+                            className="search-result-poster"
+                          />
+                          <div className="search-result-info">
+                            <h4>{movie.Title}</h4>
+                            <p>{movie.Year}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="search-no-results">
-                  <p>No se encontraron resultados para "{searchQuery}"</p>
-                  <p>Intenta con otros términos de búsqueda</p>
-                </div>
-              )}
+                  </div>
+                ) : searchQuery ? (
+                  <div className="no-results">
+                    <p>No se encontraron películas para "{searchQuery}"</p>
+                  </div>
+                ) : (
+                  <div className="search-placeholder">
+                    <Search size={48} className="search-placeholder-icon" />
+                    <p>Busca tus películas favoritas</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
