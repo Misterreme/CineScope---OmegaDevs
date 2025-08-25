@@ -266,6 +266,7 @@ const Dashboard = () => {
           <h2 className="section-title">Mi Lista - Quiero Ver</h2>
           {userLists.watchlist && userLists.watchlist.length > 0 ? (
             <MovieGrid
+              onTabChange={setActiveTab}
               movies={userLists.watchlist.map(item => ({
                 imdbID: item.imdb_id,
                 Title: item.title,
@@ -293,6 +294,7 @@ const Dashboard = () => {
           <h2 className="section-title">Mis Favoritos</h2>
           {userLists.favorites && userLists.favorites.length > 0 ? (
             <MovieGrid
+              onTabChange={setActiveTab}
               movies={userLists.favorites.map(item => ({
                 imdbID: item.imdb_id,
                 Title: item.title,
@@ -363,6 +365,7 @@ const Dashboard = () => {
             <h2 className="section-title page-title">Mi Lista - Quiero Ver</h2>
             {watchlistMovies.length > 0 ? (
               <MovieGrid
+                onTabChange={setActiveTab}
                 movies={watchlistMovies}
                 loading={loading}
                 title=""
@@ -395,6 +398,7 @@ const Dashboard = () => {
             <h2 className="section-title page-title">Películas Vistas</h2>
             {watchedMovies.length > 0 ? (
               <MovieGrid
+                onTabChange={setActiveTab}
                 movies={watchedMovies}
                 loading={loading}
                 title=""
@@ -417,6 +421,7 @@ const Dashboard = () => {
       case 'movies':
         return (
           <MovieGrid
+            onTabChange={setActiveTab}
             movies={popularMovies}
             loading={loading}
             title="Catálogo de Películas"
@@ -439,6 +444,7 @@ const Dashboard = () => {
             <h2 className="section-title page-title">Mis Favoritos</h2>
             {favoritesMovies.length > 0 ? (
               <MovieGrid
+                onTabChange={setActiveTab}
                 movies={favoritesMovies}
                 loading={loading}
                 title=""
@@ -476,6 +482,7 @@ const Dashboard = () => {
             <h2 className="section-title">{categoryName}</h2>
             {categoryMovies.length > 0 ? (
               <MovieGrid
+                onTabChange={setActiveTab}
                 movies={categoryMovies}
                 loading={loading}
                 title={`Películas de ${categoryName}`}

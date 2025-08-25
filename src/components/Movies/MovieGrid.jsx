@@ -9,6 +9,7 @@ const MovieGrid = ({
   loading, 
   title, 
   onAddToList, 
+  onTabChange, 
   userLists, 
   emptyMessage,
   showFilters = true,
@@ -158,6 +159,7 @@ const MovieGrid = ({
             key={movie.imdbID}
             movie={movie}
             onAddToList={onAddToList}
+            onTabChange={onTabChange}
             userLists={userLists}
           />
         ))}

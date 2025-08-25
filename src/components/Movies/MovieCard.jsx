@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { listService } from '../../services/listService'
 import { Eye, Star, Bookmark, Heart } from 'lucide-react'
 
-const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], favorites: [] } }) => {
+const MovieCard = ({ movie, onAddToList, onTabChange, userLists = { watched: [], saved: [], favorites: [] } }) => {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
 
@@ -14,9 +14,19 @@ const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], f
   console.log('Saved in userLists:', userLists.saved)
   console.log('Watched in userLists:', userLists.watched)
 
-  const isWatched = userLists.watched?.some(item => item.imdb_id === movie.imdbID)
-  const isSaved = userLists.watchlist?.some(item => item.imdb_id === movie.imdbID)
-  const isFavorite = userLists.favorites?.some(item => item.imdb_id === movie.imdbID)
+  const isWatched = userLists.watched?.some(item => item.imdb_id === movie.imdbID || item.imdbID === movie.imdbID)
+  const isSaved = userLists.watchlist?.some(item => item.imdb_id === movie.imdbID || item.imdbID === movie.imdbID)
+  const isFavorite = userLists.favorites?.some(item => item.imdb_id === movie.imdbID || item.imdbID === movie.imdbID)
+
+  console.log('Movie states:', {
+    movieId: movie.imdbID,
+    isWatched,
+    isSaved,
+    isFavorite,
+    watchlist: userLists.watchlist,
+    watched: userLists.watched,
+    favorites: userLists.favorites
+  })
 
   console.log('Movie states:', {
     isWatched,
@@ -47,6 +57,10 @@ const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], f
         console.log('Add result:', result)
         if (result.success && onAddToList) {
           onAddToList()
+          // Navegar a la sección de vistas si no está ya en ella
+          if (onTabChange) {
+            onTabChange('watched')
+          }
         }
       }
     } catch (error) {
@@ -85,6 +99,10 @@ const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], f
         if (result.success && onAddToList) {
           console.log('Calling onAddToList after add')
           onAddToList()
+          // Navegar a la sección de guardados si no está ya en ella
+          if (onTabChange) {
+            onTabChange('saved')
+          }
         }
       }
     } catch (error) {
@@ -126,6 +144,10 @@ const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], f
         if (result.success && onAddToList) {
           console.log('Calling onAddToList after add')
           onAddToList()
+          // Navegar a la sección de favoritos si no está ya en ella
+          if (onTabChange) {
+            onTabChange('favorites')
+          }
         }
       }
     } catch (error) {
@@ -135,12 +157,13 @@ const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], f
     }
   }
 
+
   const posterUrl = movie.Poster && movie.Poster !== 'N/A' 
     ? movie.Poster 
     : '/placeholder-movie.jpg'
 
   return (
-    <div className="movie-card">
+    <div className="movie-card" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)' }}>
       <div className="movie-poster">
         <img 
           src={posterUrl} 
@@ -153,56 +176,58 @@ const MovieCard = ({ movie, onAddToList, userLists = { watched: [], saved: [], f
           <div className="movie-actions">
             <button
               className={`action-btn saved ${isSaved ? 'added' : ''}`}
-              onClick={handleSaveMovie}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSaveMovie();
+              }}
               disabled={loading}
               title={isSaved ? 'Quitar de guardados' : 'Guardar película'}
             >
               {loading ? (
                 <div className="loading-spinner" />
               ) : (
-                <Bookmark size={16} />
+                <Bookmark size={16} fill={isSaved ? 'currentColor' : 'none'} />
               )}
             </button>
 
             <button
-              className={`action-btn favorite ${isFavorite ? 'added' : ''}`}
-              onClick={handleAddToFavorites}
-              disabled={loading}
-              title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-            >
-              {loading ? (
-                <div className="loading-spinner" />
-              ) : (
-                <Heart size={16} />
-              )}
-            </button>
-            
-            <button
               className={`action-btn watched ${isWatched ? 'added' : ''}`}
-              onClick={handleMarkAsWatched}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleMarkAsWatched();
+              }}
               disabled={loading}
               title={isWatched ? 'Quitar de vistas' : 'Marcar como vista'}
             >
               {loading ? (
                 <div className="loading-spinner" />
               ) : (
-                <Eye size={16} />
+                <Eye size={16} fill={isWatched ? 'currentColor' : 'none'} />
+              )}
+            </button>
+
+            <button
+              className={`action-btn favorite ${isFavorite ? 'added' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToFavorites();
+              }}
+              disabled={loading}
+              title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+            >
+              {loading ? (
+                <div className="loading-spinner" />
+              ) : (
+                <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
               )}
             </button>
           </div>
         </div>
       </div>
-      
       <div className="movie-info">
-        <h3 className="movie-title">{movie.Title}</h3>
-        <div className="movie-meta">
+        <h3 className="movie-title" style={{ color: 'var(--color-text)' }}>{movie.Title}</h3>
+        <div className="movie-meta" style={{ color: 'var(--color-text-secondary, #666)' }}>
           <span className="movie-year">{movie.Year}</span>
-          {movie.imdbRating && movie.imdbRating !== 'N/A' && (
-            <div className="movie-rating">
-              <Star size={14} />
-              <span>{movie.imdbRating}</span>
-            </div>
-          )}
         </div>
       </div>
     </div>

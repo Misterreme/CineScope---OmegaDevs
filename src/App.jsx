@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { NotificationProvider } from './contexts/NotificationContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 import WelcomePage from './components/Welcome/WelcomePage'
 import Dashboard from './pages/Dashboard'
 import Privacy from './pages/Privacy'
@@ -47,13 +48,15 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <NotificationProvider>
-          <AuthProvider>
-            <div className="app">
-              <AppContent />
-            </div>
-          </AuthProvider>
-        </NotificationProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <ThemeProvider>
+              <div className="app theme-transition">
+                <AppContent />
+              </div>
+            </ThemeProvider>
+          </NotificationProvider>
+        </AuthProvider>
       </Router>
     </ErrorBoundary>
   )

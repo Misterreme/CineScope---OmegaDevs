@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useTheme } from '../../hooks/useTheme'
 import { movieService } from '../../services/movieService'
-import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye } from 'lucide-react'
+import { User, LogOut, Film, Tv, BookOpen, Baby, Clock, Heart, Settings, HelpCircle, ChevronDown, Search, X, Menu, ZoomIn, Bookmark, Home, List, Eye, Sun, Moon } from 'lucide-react'
 import './Header.css'
 
 const Header = ({ activeTab, onTabChange }) => {
@@ -16,6 +17,12 @@ const Header = ({ activeTab, onTabChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchLoading, setIsSearchLoading] = useState(false)
   const [searchTimeout, setSearchTimeout] = useState(null)
+  const { toggleTheme, isDark } = useTheme();
+  
+  const handleThemeToggle = () => {
+    console.log('Cambiando tema...');
+    toggleTheme();
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +55,8 @@ const Header = ({ activeTab, onTabChange }) => {
   const handleTabChange = (tab) => {
     onTabChange(tab)
     setIsMobileMenuOpen(false)
+    // Desplazarse al inicio de la página al cambiar de pestaña
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const toggleMobileMenu = () => {
@@ -150,17 +159,28 @@ const Header = ({ activeTab, onTabChange }) => {
               <button
                 className={`nav-button ${activeTab === 'saved' ? 'active' : ''}`}
                 onClick={() => handleTabChange('saved')}
+                title="Ver películas guardadas"
               >
                 <Bookmark size={16} />
-                <span>Mi Lista</span>
+                <span>Guardados</span>
               </button>
-              
+
               <button
                 className={`nav-button ${activeTab === 'watched' ? 'active' : ''}`}
                 onClick={() => handleTabChange('watched')}
+                title="Ver películas vistas"
               >
                 <Eye size={16} />
-                <span>Visto</span>
+                <span>Vistos</span>
+              </button>
+
+              <button
+                className={`nav-button ${activeTab === 'favorites' ? 'active' : ''}`}
+                onClick={() => handleTabChange('favorites')}
+                title="Ver favoritos"
+              >
+                <Heart size={16} />
+                <span>Favoritos</span>
               </button>
             </nav>
 
@@ -171,6 +191,23 @@ const Header = ({ activeTab, onTabChange }) => {
                 alt="Buscar" 
                 className="search-icon-img"
               />
+            </button>
+
+            {/* Theme Toggle Button */}
+            <button
+              className="theme-toggle"
+              onClick={handleThemeToggle}
+              title={isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+              aria-label={isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+            >
+              {isDark ? (
+                <Sun size={20} className="theme-icon" data-testid="sun-icon" />
+              ) : (
+                <Moon size={20} className="theme-icon" data-testid="moon-icon" />
+              )}
+              <span className="theme-text">
+                {isDark ? 'Tema claro' : 'Tema oscuro'}
+              </span>
             </button>
 
             {/* Botón de favoritos - Solo visible en desktop */}

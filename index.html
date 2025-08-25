@@ -26,7 +26,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root" class="theme-transition"></div>
+    <script>
+      // Set initial theme class before React loads
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+          document.documentElement.className = theme;
+          document.body.className = theme;
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          console.error('Error setting initial theme:', e);
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

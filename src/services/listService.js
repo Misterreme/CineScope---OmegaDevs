@@ -52,12 +52,13 @@ class ListService {
       console.log('Movie:', movie)
       console.log('List Type:', listType)
       
-      // Check if movie already exists in any list for this user
+      // Check if movie already exists in this specific list for this user
       const { data: existing, error: existingError } = await supabase
         .from('user_movie_lists')
         .select('*')
         .eq('user_id', userId)
         .eq('imdb_id', movie.imdbID)
+        .eq('list_type', listType)
 
       if (existingError) {
         console.error('Error checking existing:', existingError)
@@ -121,18 +122,30 @@ class ListService {
 
   async removeFromList(userId, imdbId, listType) {
     try {
-      const { error } = await supabase
+      console.log('=== REMOVE FROM LIST ===')
+      console.log('User ID:', userId)
+      console.log('IMDB ID:', imdbId)
+      console.log('List Type:', listType)
+      
+      const { data, error } = await supabase
         .from('user_movie_lists')
         .delete()
         .eq('user_id', userId)
         .eq('imdb_id', imdbId)
         .eq('list_type', listType)
 
-      if (error) throw error
+      if (error) {
+        console.error('Error removing from list:', error)
+        throw error
+      }
 
-      return { success: true }
+      console.log('Successfully removed from list')
+      return { 
+        success: true,
+        data: data ? data[0] : null
+      }
     } catch (error) {
-      console.error('Error removing from list:', error)
+      console.error('Error in removeFromList:', error)
       return {
         success: false,
         error: error.message

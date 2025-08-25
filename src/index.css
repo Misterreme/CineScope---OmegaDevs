@@ -1,18 +1,70 @@
-/* Reset básico para Cines Scope */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Base styles for html and body */
+html {
+  height: 100%;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
+  padding: 0;
+  min-height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: #0E0F19;
-  color: #ffffff;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Light theme (default) */
+:root {
+  --color-bg: #f8f9fa;
+  --color-text: #212529;
+  --color-primary: #6c5ce7;
+  --color-secondary: #a29bfe;
+  --color-card: #ffffff;
+  --color-border: #e0e0e0;
+  --color-text-secondary: #666;
+}
+
+/* Dark theme */
+:root.dark {
+  --color-bg: #0E0F19;
+  --color-text: #ffffff;
+  --color-primary: #8c7ae6;
+  --color-secondary: #9c88ff;
+  --color-card: #1a1a2e;
+  --color-border: #2d3436;
+  --color-text-secondary: #aaa;
+}
+
+/* Apply theme to body */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Ensure #root takes full height */
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Smooth transitions for theme changes */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Base element styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply theme transitions to specific elements */
+a, button, input, textarea, select {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }

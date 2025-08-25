@@ -1,3 +1,78 @@
+/* Theme Toggle Button */
+.theme-toggle {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin: 0 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  font-weight: 500;
+  gap: 6px;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0,0.1);
+}
+
+.theme-icon {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+  transform: rotate(15deg);
+}
+
+.theme-text {
+  margin-left: 4px;
+  font-size: 0.85rem;
+}
+
+/* Ensure proper contrast in both themes */
+[data-theme="dark"] .theme-toggle {
+  border-color: var(--color-border);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Header Theme Styles */
+.app-header {
+  background-color: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-button {
+  color: var(--color-text);
+}
+
+.nav-button:hover {
+  color: var(--color-primary);
+  background-color: rgba(108, 92, 231, 0.1);
+}
+
+.nav-button.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+
 /* Search Modal Overlay */
 .search-modal-overlay {
   position: fixed;
